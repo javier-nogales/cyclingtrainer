@@ -1,9 +1,9 @@
 
-import 'package:trainerapp/features/domain/entities/device.dart';
+import 'package:trainerapp/features/domain/entities/bt_device.dart';
 
 abstract class HeartRateDevice {
 
-  final Device _device;
+  final BTDevice _device;
 
   HeartRateDevice(this._device);
 
