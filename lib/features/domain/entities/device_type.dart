@@ -2,6 +2,6 @@
 
 enum DeviceType {
   cadence,
-  heart_rate,
+  heartRate,
   trainer,
 }

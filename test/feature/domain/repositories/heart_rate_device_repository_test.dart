@@ -5,11 +5,13 @@ import 'package:mockito/mockito.dart';
 import 'package:trainerapp/features/domain/entities/bt_device.dart';
 import 'package:trainerapp/features/domain/entities/db_device.dart';
 import 'package:trainerapp/features/domain/entities/device_type.dart';
+import 'package:trainerapp/features/domain/entities/heart_rate_device.dart';
 import 'package:trainerapp/features/domain/entities/trainer_device.dart';
 import 'package:trainerapp/features/domain/entities/device_class.dart';
 import 'package:trainerapp/features/domain/providers/bluetooth_provider.dart';
 import 'package:trainerapp/features/domain/providers/data_provider.dart';
 import 'package:trainerapp/features/domain/repositories/device_repository.dart';
+import 'package:trainerapp/features/domain/repositories/heart_rate_device_repository.dart';
 import 'package:trainerapp/features/domain/repositories/trainer_device_repository.dart';
 
 import '../mocks/mock_blue_device.dart';
@@ -26,18 +28,18 @@ void main() {
 
   MockBluetoothProvider mockBluetoothProvider;
   MockDataProvider mockDataProvider;
-  DeviceRepository<TrainerDevice> repository;
+  DeviceRepository<HeartRateDevice> repository;
   DBDevice dbDevice;
-  TrainerDevice trainerDevice;
+  HeartRateDevice heartRateDevice;
   MockBlueDevice mockBlueDevice;
 
   setUp((){
     mockBluetoothProvider = MockBluetoothProvider();
     mockDataProvider = MockDataProvider();
-    repository = TrainerDeviceRepository(mockDataProvider, mockBluetoothProvider);
-    dbDevice = DBDevice("fakeID", "fakeName", DeviceType.trainer, DeviceClass.bkoolTrainer);
+    repository = HeartRateDeviceRepository(mockDataProvider, mockBluetoothProvider);
+    dbDevice = DBDevice("fakeID", "fakeName", DeviceType.heartRate, DeviceClass.standardHeartRate);
     mockBlueDevice = MockBlueDevice();
-    trainerDevice = TrainerDevice.from(dbDevice);
+    heartRateDevice = HeartRateDevice.from(dbDevice);
   });
 
   test('Test if no device data', () async {
@@ -62,7 +64,7 @@ void main() {
 
     final result = await repository.getDevice();
 
-    expect(result, equals(Right(trainerDevice)));
+    expect(result, equals(Right(heartRateDevice)));
     result.fold(
         (failure) => {},
         (trainerDevice) {
@@ -80,7 +82,7 @@ void main() {
 
     final result = await repository.getDevice();
 
-    expect(result, equals(Right(trainerDevice)));
+    expect(result, equals(Right(heartRateDevice)));
     result.fold(
             (failure) => {},
             (trainerDevice) {

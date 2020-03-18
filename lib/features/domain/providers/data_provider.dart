@@ -1,9 +1,9 @@
 
-import 'package:trainerapp/features/domain/entities/trainer_device.dart';
+import 'package:trainerapp/features/domain/entities/db_device.dart';
 
 // Interface
 abstract class DataProvider {
 
-  Future<TrainerDevice> getTrainerDevice();
+  Future<DBDevice> getTrainerDevice();
 
 }

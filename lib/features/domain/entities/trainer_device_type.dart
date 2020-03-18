@@ -1,4 +1,0 @@
-
-enum TrainerDeviceType {
-  bkool,
-}

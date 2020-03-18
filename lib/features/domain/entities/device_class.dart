@@ -1,0 +1,5 @@
+
+enum DeviceClass {
+  bkoolTrainer,
+  standardHeartRate,
+}
