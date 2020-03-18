@@ -1,6 +1,6 @@
 
 import 'package:meta/meta.dart';
-import 'package:trainerapp/features/domain/entities/device_base.dart';
+import 'package:trainerapp/features/domain/entities/device/device_package.dart';
 import 'package:trainerapp/features/domain/providers/bluetooth_provider.dart';
 import 'package:trainerapp/features/domain/providers/data_provider.dart';
 import 'package:trainerapp/features/domain/repositories/device_repository.dart';

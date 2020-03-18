@@ -1,5 +1,6 @@
-import 'package:trainerapp/features/domain/entities/device_class.dart';
-import 'package:trainerapp/features/domain/entities/device_type.dart';
+
+
+import '../device/device_package.dart';
 
 class DBDevice {
 

@@ -1,8 +1,6 @@
 
 
-import 'package:trainerapp/features/domain/entities/device_type.dart';
-
-import 'heart_rate_device.dart';
+import 'device_package.dart';
 
 class StandardHeartRateDevice extends HeartRateDevice {
 

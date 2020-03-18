@@ -1,9 +1,9 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:trainerapp/core/error/failures.dart';
-import 'package:trainerapp/features/domain/entities/bt_device.dart';
-import 'package:trainerapp/features/domain/entities/db_device.dart';
-import 'package:trainerapp/features/domain/entities/heart_rate_device.dart';
+import 'package:trainerapp/features/domain/entities/bluetooth/bluetooth_package.dart';
+import 'package:trainerapp/features/domain/entities/database/database_package.dart';
+import 'package:trainerapp/features/domain/entities/device/device_package.dart';
 import 'package:trainerapp/features/domain/providers/bluetooth_provider.dart';
 import 'package:trainerapp/features/domain/providers/data_provider.dart';
 import 'package:trainerapp/features/domain/repositories/device_repository_base.dart';

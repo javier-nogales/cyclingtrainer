@@ -2,7 +2,7 @@
 
 
 // interface
-import 'package:trainerapp/features/domain/entities/bt_device.dart';
+import 'package:trainerapp/features/domain/entities/bluetooth/bluetooth_package.dart';
 
 abstract class BluetoothProvider {
 

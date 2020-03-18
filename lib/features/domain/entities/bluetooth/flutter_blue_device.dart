@@ -2,26 +2,16 @@
 import 'dart:async';
 
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:trainerapp/features/domain/entities/bt_device.dart';
+import 'package:trainerapp/features/domain/entities/bluetooth/bluetooth_package.dart';
 
-import 'bt_device_state.dart';
 
 
 class FlutterBlueDevice implements BTDevice {
 
-//==============================================================================
-// Wrapped bluetooth device
-//==============================================================================
   final BluetoothDevice _device;
 
-//==============================================================================
-// Constructor
-//==============================================================================
   FlutterBlueDevice(this._device);
 
-//==============================================================================
-// Exposed wrapped fields
-//==============================================================================
 // TODO: remove if is not valid code
 //  Stream<BTDeviceState> get state async* {
 //    await for (BluetoothDeviceState bds in _device.state) {
@@ -32,9 +22,6 @@ class FlutterBlueDevice implements BTDevice {
   Stream<BTDeviceState> get state =>
       _device.state.map((BluetoothDeviceState bds) => _transformDeviceState(bds));
 
-//==============================================================================
-// Private methods
-//==============================================================================
   BTDeviceState _transformDeviceState(BluetoothDeviceState bds) {
     switch(bds) {
       case BluetoothDeviceState.disconnected:
@@ -50,6 +37,7 @@ class FlutterBlueDevice implements BTDevice {
         return BTDeviceState.disconnecting;
         break;
     }
+
   }
 
 
