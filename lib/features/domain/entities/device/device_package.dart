@@ -2,53 +2,55 @@
 
 import 'dart:async';
 import 'dart:ui';
+import 'package:rxdart/rxdart.dart';
 
 import 'package:trainerapp/features/domain/entities/bluetooth/bluetooth_package.dart';
-import 'package:trainerapp/features/domain/entities/database/database_package.dart';
 
-import 'standard_heart_rate_device.dart';
+import '../identifiers.dart';
 
-import 'bkool_trainer_device.dart';
+//==============================================================================
+//
+//==============================================================================
+abstract class Device {
 
-
-abstract class DeviceBase {
-
-  final String _id;
+  final DeviceID _id;
   final String _name;
   final DeviceType _type;
+  final _state = BehaviorSubject<DeviceState>();
 
-  BTDevice _device;
+  BTDevice _btDevice;
 
-  // TODO: set state as Stream<DeviceState> from device.
-  StreamController<DeviceState> _stateController = StreamController<DeviceState>.broadcast();
-  Stream<DeviceState> get state => _stateController.stream;
-
-  DeviceBase(this._id, this._name, this._type) {
+  Device(this._id, this._name, this._type) {
     // at this time device is null
-    _stateController.add(DeviceState.notFound);
+    _state.add(DeviceState.notFound);
   }
+
+  DeviceID get id => _id;
+  String get name => _name;
+  DeviceType get type => _type;
+  Stream<DeviceState> get state => _state.stream;
 
   set btDevice(BTDevice device) {
-    _device = device;
+    _btDevice = device;
     if (device == null) {
-      _stateController.add(DeviceState.notFound);
+      _state.add(DeviceState.notFound);
     } else {
-//      _device.state.listen((btDeviceState) {
-//        _stateController.add(_transformBTStateToDeviceState(btDeviceState));
-//      });
+      _btDevice.btState.listen((btDeviceState) {
+        _state.add(_transformBTStateToDeviceState(btDeviceState));
+      });
     }
   }
-  BTDevice get btDevice => this._device;
+  BTDevice get btDevice => this._btDevice;
 
   DeviceState _transformBTStateToDeviceState(BTDeviceState btDeviceState) {
     DeviceState outState;
     switch (btDeviceState) {
       case BTDeviceState.disconnected:
       case BTDeviceState.connecting:
+      case BTDeviceState.disconnecting:
         outState = DeviceState.disconnected;
         break;
       case BTDeviceState.connected:
-      case BTDeviceState.disconnecting:
         outState = DeviceState.connected;
         break;
     }
@@ -58,7 +60,7 @@ abstract class DeviceBase {
   @override
   bool operator == (Object other) =>
       identical(this, other) ||
-          other is DeviceBase &&
+          other is Device &&
               runtimeType == other.runtimeType &&
               _id == other._id &&
               _name == other._name &&
@@ -68,42 +70,29 @@ abstract class DeviceBase {
 
 }
 
-abstract class TrainerDevice extends DeviceBase {
+//==============================================================================
+// DEVICE INTERFACES
+//==============================================================================
+abstract class TrainerDevice extends Device {
 
-  TrainerDevice(String id, String name, DeviceType type) : super(id, name, type);
-
-  factory TrainerDevice.from(DBDevice dbDevice) {
-    TrainerDevice outDevice;
-    switch (dbDevice.deviceClass) {
-      case DeviceClass.bkoolTrainer:
-        outDevice = new BkoolTrainerDevice(dbDevice.id, dbDevice.name, dbDevice.type);
-        break;
-      default:
-      // TODO: throw exception
-    }
-    return outDevice;
-  }
+  TrainerDevice(DeviceID id, String name, DeviceType type)
+      : super(id, name, type);
 
 }
 
-abstract class HeartRateDevice extends DeviceBase{
 
-  HeartRateDevice(String id, String name, DeviceType type) : super(id, name, type);
+abstract class HeartRateDevice extends Device{
 
-  factory HeartRateDevice.from(DBDevice dbDevice) {
-    HeartRateDevice outDevice;
-    switch (dbDevice.deviceClass) {
-      case DeviceClass.standardHeartRate:
-        outDevice = new StandardHeartRateDevice(dbDevice.id, dbDevice.name, dbDevice.type);
-        break;
-      default:
-      // TODO: throw exception
-    }
-    return outDevice;
-  }
+  HeartRateDevice(DeviceID id, String name, DeviceType type)
+      : super(id, name, type);
 
 }
 
+
+
+//==============================================================================
+//
+//==============================================================================
 enum DeviceType {
   cadence,
   heartRate,

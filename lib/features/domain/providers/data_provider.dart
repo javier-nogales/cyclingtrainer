@@ -6,4 +6,6 @@ abstract class DataProvider {
 
   Future<DBDevice> getTrainerDevice();
 
+  Future<DBDevice> getHeartRateDevice();
+
 }

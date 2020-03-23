@@ -1,8 +1,12 @@
 
 
+import 'package:trainerapp/features/domain/entities/identifiers.dart';
+
 abstract class BTDevice {
 
-  Stream<BTDeviceState> get state;
+  DeviceID get btId;
+  String get btName;
+  Stream<BTDeviceState> get btState;
 
 }
 

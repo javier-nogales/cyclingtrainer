@@ -1,9 +1,8 @@
 
 import 'dart:async';
-
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:trainerapp/features/domain/entities/bluetooth/bluetooth_package.dart';
-
+import 'package:trainerapp/features/domain/entities/identifiers.dart';
 
 
 class FlutterBlueDevice implements BTDevice {
@@ -12,15 +11,17 @@ class FlutterBlueDevice implements BTDevice {
 
   FlutterBlueDevice(this._device);
 
-// TODO: remove if is not valid code
-//  Stream<BTDeviceState> get state async* {
-//    await for (BluetoothDeviceState bds in _device.state) {
-//      yield _transformDeviceState(bds);
-//    }
-//  }
   @override
-  Stream<BTDeviceState> get state =>
-      _device.state.map((BluetoothDeviceState bds) => _transformDeviceState(bds));
+  DeviceID get btId => DeviceID(_device.id.toString());
+
+  @override
+  String get btName => _device.name;
+  
+  @override
+  Stream<BTDeviceState> get btState =>
+      _device.state.map((BluetoothDeviceState bds) =>
+          _transformDeviceState(bds)
+      );
 
   BTDeviceState _transformDeviceState(BluetoothDeviceState bds) {
     switch(bds) {
@@ -39,7 +40,5 @@ class FlutterBlueDevice implements BTDevice {
     }
 
   }
-
-
 
 }

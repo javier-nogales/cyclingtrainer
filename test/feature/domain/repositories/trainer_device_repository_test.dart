@@ -5,10 +5,10 @@ import 'package:mockito/mockito.dart';
 import 'package:trainerapp/features/domain/entities/bluetooth/bluetooth_package.dart';
 import 'package:trainerapp/features/domain/entities/database/database_package.dart';
 import 'package:trainerapp/features/domain/entities/device/device_package.dart';
+import 'package:trainerapp/features/domain/entities/device/device_factory.dart';
 import 'package:trainerapp/features/domain/providers/bluetooth_provider.dart';
 import 'package:trainerapp/features/domain/providers/data_provider.dart';
 import 'package:trainerapp/features/domain/repositories/device_repository.dart';
-import 'package:trainerapp/features/domain/repositories/trainer_device_repository.dart';
 
 import '../mocks/mock_blue_device.dart';
 
@@ -26,16 +26,18 @@ void main() {
   MockDataProvider mockDataProvider;
   DeviceRepository<TrainerDevice> repository;
   DBDevice dbDevice;
+  DeviceFactory deviceFactory;
   TrainerDevice trainerDevice;
-  MockBlueDevice mockBlueDevice;
+  BTDevice mockBlueDevice;
 
   setUp((){
     mockBluetoothProvider = MockBluetoothProvider();
     mockDataProvider = MockDataProvider();
-    repository = TrainerDeviceRepository(mockDataProvider, mockBluetoothProvider);
+    repository = TrainerDeviceRepository(mockDataProvider, mockBluetoothProvider, TrainerDeviceFactory());
     dbDevice = DBDevice("fakeID", "fakeName", DeviceType.trainer, DeviceClass.bkoolTrainer);
     mockBlueDevice = MockBlueDevice();
-    trainerDevice = TrainerDevice.from(dbDevice);
+    deviceFactory = TrainerDeviceFactory();
+    trainerDevice = deviceFactory.from(dbDevice);
   });
 
   test('Test if no device data', () async {
