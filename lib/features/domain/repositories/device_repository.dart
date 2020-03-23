@@ -10,7 +10,7 @@ import 'package:trainerapp/features/domain/providers/data_provider.dart';
 
 abstract class DeviceRepository<T extends Device> {
 
-  Future<Either<Failure,T>> getDevice();
+  Future<T> getDevice();
 
 }
 
@@ -36,7 +36,7 @@ class TrainerDeviceRepository extends DeviceRepositoryBase<TrainerDevice> {
       factory);
 
   @override
-  Future<Either<Failure, TrainerDevice>> getDevice() async {
+  Future<TrainerDevice> getDevice() async {
     if (_device == null) {
       DBDevice dbDevice = await _loadDevice();
       if (dbDevice != null) {
@@ -44,7 +44,7 @@ class TrainerDeviceRepository extends DeviceRepositoryBase<TrainerDevice> {
         _device.btDevice = await _findDevice(dbDevice.id);
       }
     }
-    return Right(_device);
+    return _device;
   }
 
   Future<DBDevice> _loadDevice() async =>
@@ -64,7 +64,7 @@ class HeartRateDeviceRepository extends DeviceRepositoryBase<HeartRateDevice> {
       factory);
 
   @override
-  Future<Either<Failure, HeartRateDevice>> getDevice() async {
+  Future<HeartRateDevice> getDevice() async {
     if (_device == null) {
       DBDevice dbDevice = await _loadDevice();
       if (dbDevice != null) {
@@ -72,7 +72,7 @@ class HeartRateDeviceRepository extends DeviceRepositoryBase<HeartRateDevice> {
         _device.btDevice = await _findDevice(dbDevice.id);
       }
     }
-    return Right(_device);
+    return _device;
   }
 
   Future<DBDevice> _loadDevice() async =>

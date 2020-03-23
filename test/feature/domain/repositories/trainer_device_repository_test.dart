@@ -49,7 +49,7 @@ void main() {
 
     final result = await repository.getDevice();
 
-    expect(result, equals(Right(null)));
+    expect(result, equals(null));
 
   });
 
@@ -62,12 +62,8 @@ void main() {
 
     final result = await repository.getDevice();
 
-    expect(result, equals(Right(trainerDevice)));
-    result.fold(
-        (failure) => {},
-        (trainerDevice) {
-      expect(trainerDevice.btDevice, null);
-    });
+    expect(result, equals(trainerDevice));
+    expect(result.btDevice, null);
 
   });
 
@@ -80,14 +76,9 @@ void main() {
 
     final result = await repository.getDevice();
 
-    expect(result, equals(Right(trainerDevice)));
-    result.fold(
-            (failure) => {},
-            (trainerDevice) {
-          expect(trainerDevice.btDevice, isNotNull);
-          expect(trainerDevice.btDevice, isA<BTDevice>());
-        });
-
+    expect(result, equals(trainerDevice));
+    expect(result.btDevice, isNotNull);
+    expect(result.btDevice, isA<BTDevice>());
 
   });
 
