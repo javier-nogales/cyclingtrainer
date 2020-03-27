@@ -1,0 +1,66 @@
+
+import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:trainerapp/core/error/failures.dart';
+import 'package:trainerapp/core/error/several_failure.dart';
+import 'package:trainerapp/api/use_cases/trainer_device_controller.dart';
+import 'package:trainerapp/api/bluetooth/bt_device.dart';
+import 'package:trainerapp/api/db/db_device.dart';
+import 'package:trainerapp/api/device/device_factory.dart';
+import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device_repository.dart';
+import 'package:trainerapp/api/use_cases/trainer_device_use_cases.dart';
+
+import '../bluetooth/mock_blue_device.dart';
+
+class MockTrainerDeviceRepository extends Mock
+  implements TrainerDeviceRepository {}
+
+void main (){
+
+  Device device;
+  DBDevice dbDevice;
+  MockBlueDevice btDevice;
+  TrainerDeviceUseCases useCases;
+  DeviceRepository<TrainerDevice> repository;
+
+  setUp((){
+
+    dbDevice = DBDevice("fakeID", "fakeName", DeviceType.trainer, DeviceClass.bkoolTrainer);
+    btDevice = MockBlueDevice();
+    device = TrainerDeviceFactory().from(dbDevice);
+    repository = MockTrainerDeviceRepository();
+    useCases = TrainerDeviceController(repository);
+
+  });
+
+  test('Should get trainer device state', () async {
+
+    when(repository.getDevice())
+        .thenAnswer((_) async => device);
+    btDevice.addState(BTDeviceState.connected);
+
+    final result = await useCases.getTrainerDeviceState();
+
+    result.fold(
+            (failure) => throw AssertionError(),
+            (state) => expect(state, emitsAnyOf(DeviceState.values)));
+
+  });
+
+  test('Should get failure', () async {
+
+    when(repository.getDevice())
+        .thenThrow(SeveralFailure());
+    btDevice.addState(BTDeviceState.connected);
+
+    final result = await useCases.getTrainerDeviceState();
+
+    result.fold(
+            (failure) => expect(failure, isA<Failure>()),
+            (state) => throw AssertionError());
+
+  });
+
+}
