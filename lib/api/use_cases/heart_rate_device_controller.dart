@@ -14,7 +14,7 @@ class HeartRateDeviceController implements HeartRateDeviceUseCases {
   HeartRateDeviceController(this._repository);
 
   @override
-  Future<Either<Failure, Stream<DeviceState>>> getHeartRateDeviceState() async {
+  Future<Either<Failure, Stream<DeviceState>>> getDeviceState() async {
     try {
       Device device = await _repository.getDevice();
       return Right(device.state);

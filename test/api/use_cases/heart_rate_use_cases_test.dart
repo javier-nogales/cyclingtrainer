@@ -1,6 +1,6 @@
 
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/db/db_device.dart';
@@ -41,7 +41,7 @@ void main() {
         .thenAnswer((_) async => device);
     btDevice.addState(BTDeviceState.connected);
 
-    final result = await useCases.getHeartRateDeviceState();
+    final result = await useCases.getDeviceState();
 
     result.fold(
             (failure) => throw AssertionError(),
@@ -55,7 +55,7 @@ void main() {
         .thenThrow(SeveralFailure());
     btDevice.addState(BTDeviceState.connected);
 
-    final result = await useCases.getHeartRateDeviceState();
+    final result = await useCases.getDeviceState();
 
     result.fold(
             (failure) => expect(failure, isA<Failure>()),

@@ -1,6 +1,5 @@
 
-import 'package:dartz/dartz.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trainerapp/core/error/failures.dart';
 import 'package:trainerapp/core/error/several_failure.dart';
@@ -41,7 +40,7 @@ void main (){
         .thenAnswer((_) async => device);
     btDevice.addState(BTDeviceState.connected);
 
-    final result = await useCases.getTrainerDeviceState();
+    final result = await useCases.getDeviceState();
 
     result.fold(
             (failure) => throw AssertionError(),
@@ -55,7 +54,7 @@ void main (){
         .thenThrow(SeveralFailure());
     btDevice.addState(BTDeviceState.connected);
 
-    final result = await useCases.getTrainerDeviceState();
+    final result = await useCases.getDeviceState();
 
     result.fold(
             (failure) => expect(failure, isA<Failure>()),

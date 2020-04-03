@@ -1,10 +1,8 @@
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:test/test.dart';
 import 'package:trainerapp/core/error/failures.dart';
 import 'package:trainerapp/core/error/several_failure.dart';
 import 'package:trainerapp/api/use_cases/linking_controller.dart';
-import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/db/db_device.dart';
 import 'package:trainerapp/api/device/device_factory.dart';
 import 'package:trainerapp/api/device/device_package.dart';

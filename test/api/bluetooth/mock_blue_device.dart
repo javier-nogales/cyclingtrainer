@@ -25,14 +25,18 @@ class MockBlueDevice implements BTDevice {
 //==============================================================================
 //
 //==============================================================================
-  addState(BTDeviceState state) {
-    _streamController.sink.add(state);
+  addState(BTDeviceState state) async {
+    return _streamController.sink.add(state);
   }
   addId(String id) {
     _id = DeviceID(id);
   }
   addName(String name) {
     _name = name;
+  }
+
+  closeStateBTStream() {
+    _streamController.close();
   }
 
 }

@@ -1,5 +1,5 @@
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trainerapp/core/error/failures.dart';
 import 'package:trainerapp/core/error/several_failure.dart';
@@ -8,7 +8,6 @@ import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/bluetooth/bluetooth_provider.dart';
 import 'package:trainerapp/api/use_cases/bluetooth_use_cases.dart';
 
-import '../bluetooth/mock_blue_device.dart';
 import '../bluetooth/mock_flutter_blue_provider.dart';
 
 class MockBluetoothProvider extends Mock

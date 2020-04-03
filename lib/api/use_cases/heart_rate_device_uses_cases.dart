@@ -1,11 +1,7 @@
 
+import 'package:trainerapp/api/use_cases/device_use_cases.dart';
 
-import 'package:dartz/dartz.dart';
-import 'package:trainerapp/core/error/failures.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+abstract class HeartRateDeviceUseCases extends DeviceUseCases{
 
-abstract class HeartRateDeviceUseCases {
-
-  Future<Either<Failure,Stream<DeviceState>>> getHeartRateDeviceState();
 
 }

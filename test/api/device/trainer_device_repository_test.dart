@@ -1,6 +1,5 @@
 
-import 'package:dartz/dartz.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/db/db_device.dart';
