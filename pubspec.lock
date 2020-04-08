@@ -142,11 +142,9 @@ packages:
   flutter_blue:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "1.7.1"
-      resolved-ref: "4c1d4302634af5c6049f2c7ff5a44b198422fab1"
-      url: "https://github.com/boskokg/flutter_blue.git"
-    source: git
+      name: flutter_blue
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.7.1"
   flutter_test:
     dependency: "direct dev"
@@ -517,4 +515,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.7.0 <3.0.0"
-  flutter: ">=1.12.1"
+  flutter: ">=1.12.13+hotfix.6 <2.0.0"
