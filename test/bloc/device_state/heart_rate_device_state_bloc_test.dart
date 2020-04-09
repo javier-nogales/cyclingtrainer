@@ -33,13 +33,13 @@ void main() {
 
     blocTest<HeartRateDeviceStateBloc, DeviceStateEvent, DeviceStateState>(
         'Emits HeartRateDeviceStateInitial when is created',
-        build: () => heartRateDeviceStateBloc,
+        build: () async => heartRateDeviceStateBloc,
         expect: [InitialDeviceState()]
     );
 
     blocTest<HeartRateDeviceStateBloc, DeviceStateEvent, DeviceStateState>(
         'Emits all states in order when useCase return device',
-        build: () {
+        build: () async {
           mockHeartRateDevice = MockHeartRateDevice();
           when(useCases.getDeviceState())
               .thenAnswer(
@@ -67,7 +67,7 @@ void main() {
 
     blocTest<HeartRateDeviceStateBloc, DeviceStateEvent, DeviceStateState>(
         'Return SeveralFailure when useCase return Failure',
-        build: () {
+        build: () async {
           mockHeartRateDevice = MockHeartRateDevice();
           when(useCases.getDeviceState())
               .thenAnswer(

@@ -29,13 +29,13 @@ void main() {
 
     blocTest<TrainerDeviceStateBloc, DeviceStateEvent, DeviceStateState>(
         'Emits TrainerDeviceStateInitial when is created',
-        build: () => trainerDeviceStateBloc,
+        build: () async => trainerDeviceStateBloc,
         expect: [InitialDeviceState()]
     );
 
     blocTest<TrainerDeviceStateBloc, DeviceStateEvent, DeviceStateState>(
         'Emits all states in order when useCase return device',
-        build: () {
+        build: () async {
           mockTrainerDevice = MockTrainerDevice();
           when(useCases.getDeviceState())
               .thenAnswer(
@@ -63,7 +63,8 @@ void main() {
 
     blocTest<TrainerDeviceStateBloc, DeviceStateEvent, DeviceStateState>(
         'Return SeveralFailure when useCase return Failure',
-        build: () {
+        build: () async
+        {
           mockTrainerDevice = MockTrainerDevice();
           when(useCases.getDeviceState())
               .thenAnswer(

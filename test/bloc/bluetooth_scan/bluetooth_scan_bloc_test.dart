@@ -46,13 +46,13 @@ void main() {
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
       'Emits InitialBluetoothScanState when is created',
-      build: () => BluetoothScanBloc(useCases: useCases),
+      build: () async => BluetoothScanBloc(useCases: useCases),
       expect: [InitialBluetoothScanState()],
     );
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
         'Emits InitialBluetoothScanState + BluetoothScanLoadInProgress when scan started',
-      build: () {
+      build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
@@ -70,7 +70,7 @@ void main() {
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
       'Emits BluetoothScanListenInProgress[...] state when provider find btDevices',
-      build: () {
+      build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
@@ -93,7 +93,7 @@ void main() {
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
       'Emits BluetoothScanFinishSuccess when scan timeout finsh (done)',
-      build: () {
+      build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
@@ -118,7 +118,7 @@ void main() {
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
       'Emits BluetoothScanFailure when scan fail (error)',
-      build: () {
+      build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
@@ -144,7 +144,7 @@ void main() {
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
       'Restart scan correctly',
-      build: () {
+      build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
