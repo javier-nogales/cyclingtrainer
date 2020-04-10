@@ -1,9 +1,13 @@
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+
+import 'package:permission_handler/permission_handler.dart';
+
 // import 'package:trainerapp/bloc/bluetooth_scan/bloc.dart';
 // import 'bloc/bluetooth_scan/bluetooth_scan_bloc.dart';
 // import 'bloc/bluetooth_scan/bluetooth_scan_state.dart';
@@ -21,7 +25,7 @@ class TrainerApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Pruebas(),
+      home: HomePage(),
     );
   }
 
@@ -31,7 +35,9 @@ class Pruebas extends StatelessWidget {
   final _fb = FlutterBlue.instance;
   @override
   Widget build(BuildContext context) {
-    _pruebaBluetooth();
+
+    _testBluetooth();
+
     return Scaffold(
       body: Center(
         child: Text('Empezamos las pruebas'),
@@ -39,66 +45,45 @@ class Pruebas extends StatelessWidget {
     );
   }
 
-  _pruebaBluetooth() {
-    _fb.scanResults.listen((results) {
-      // do something with scan results
-      for (ScanResult r in results) {
-        print('${r.device.name} found! rssi: ${r.rssi}');
-      }
-    });
-    _fb.startScan(timeout: Duration(seconds: 3),
-      scanMode: ScanMode.lowPower
-    );
+  _testBluetooth() async {
+//    if (await Permission.location.request().isGranted) {
+      _fb.scanResults.listen((results) {
+        // do something with scan results
+        for (ScanResult r in results) {
+          print('${r.device.name} found! rssi: ${r.rssi}');
+        }
+      });
+      _fb.startScan(timeout: Duration(seconds: 3));
+//    }
   }
 
 }
-/*
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final BluetoothScanBloc bluetoothScanBloc = di.sl<BluetoothScanBloc>();
+
 
     return Scaffold(
       body: Center(
         child: Container(
-          child: BlocBuilder<BluetoothScanBloc, BluetoothScanState>(
-            bloc: bluetoothScanBloc,
-            // ignore: missing_return
-            builder: (context, state) {
-              if (state is InitialBluetoothScanState) {
-                bluetoothScanBloc.add(BluetoothScanStarted());
-                return Text('InitialState');
-              }
-              if (state is BluetoothScanLoadInProgress) {
-                return Text('LoadInProgress');
-              }
-              if (state is BluetoothScanListenInProgress) {
-//                return ListView.builder(
-//                    itemBuilder: (BuildContext context, int index) {
-//                      print(index);
-//                      if (state.btDevices.isNotEmpty) {
-//                        String name = state.btDevices[index].btName;
-//                        return Text('Item: $name');
-//                      } else {
-//                        return Text('Empty list $index');
-//                      }
-//
-//                    }
-//                );
-                return Text('ListenInProgress');
-              }
-              if (state is BluetoothScanFinishSuccess) {
-                return Text('FinishSuccess');
-              }
-              if (state is BluetoothScanFailure) {
-                return Text('Failure');
-              }
-            },
-          )
-        ),
+          height: 200,
+          width: 200,
+          color: Colors.blue,
+        )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Pruebas()
+              )
+          );
+        }
       ),
     );
   }
 
 }
-*/
+
