@@ -25,6 +25,7 @@ class _BluetoothScanResultHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       color: Colors.red,
           child: Row(
             children: <Widget>[
@@ -32,6 +33,7 @@ class _BluetoothScanResultHeader extends StatelessWidget {
               _BluetoothScanResultButton(),
             ],
           ),
+          
     );
   }
 }
