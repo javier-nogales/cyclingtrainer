@@ -30,6 +30,7 @@ void main() {
     blocTest<TrainerDeviceStateBloc, DeviceStateEvent, DeviceStateState>(
         'Emits TrainerDeviceStateInitial when is created',
         build: () async => trainerDeviceStateBloc,
+        skip: 0,
         expect: [InitialDeviceState()]
     );
 
@@ -52,7 +53,6 @@ void main() {
           await mockTrainerDevice.addBTState(BTDeviceState.disconnected);
         },
         expect: [
-          InitialDeviceState(),
           DeviceStateLoadInProgress(),
           DeviceStateUpdateSuccess(DeviceState.notFound),
           DeviceStateUpdateSuccess(DeviceState.disconnected),
@@ -73,10 +73,9 @@ void main() {
           trainerDeviceStateBloc.init();
           return trainerDeviceStateBloc;
         },
-        act: (bloc) async => bloc.add(DeviceStateStarted()),
+        skip: 0,
         expect: [
           InitialDeviceState(),
-          DeviceStateLoadInProgress(),
           DeviceStateFailure(),
         ]
     );

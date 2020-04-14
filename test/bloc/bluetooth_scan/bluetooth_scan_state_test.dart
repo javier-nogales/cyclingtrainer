@@ -1,7 +1,5 @@
-
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:trainerapp/bloc/bluetooth_scan/bluetooth_scan_state.dart';
+import 'package:trainerapp/bloc/bluetooth_scan/bluetooth_scan_bloc.dart';
 
 void main() {
 
@@ -22,12 +20,6 @@ void main() {
     group('BluetoothScanListenInProgress', () {
       test('toString return correct value', () {
         expect(BluetoothScanListenInProgress([]).toString(), 'scanListenInProgress[]');
-      });
-    });
-
-    group('BluetoothScanDone', () {
-      test('toString returns correct value', () {
-        expect(BluetoothScanFinishSuccess().toString(), 'scanFinishSuccess');
       });
     });
 

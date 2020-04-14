@@ -7,4 +7,6 @@ abstract class BluetoothUseCases {
 
   Either<Failure,Stream<List<BTDevice>>> fetchDevices();
 
+  Either<Failure,Stream<bool>> isScanning();
+
 }

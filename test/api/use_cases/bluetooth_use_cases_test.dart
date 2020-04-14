@@ -39,6 +39,39 @@ void main() {
 
   });
 
+  test('Sould return isConected Stream<bol>', () {
+    when(provider.isScanning())
+        .thenAnswer((_) async* {yield true;});
+    
+    final result = useCases.isScanning();
+
+    result.fold(
+      (failure) => throw AssertionError(), 
+      (isScanning) => expect(isScanning, isA<Stream<bool>>()));
+  });
+
+  test('Sould return isConected = true', () {
+    when(provider.isScanning())
+        .thenAnswer((_) async* {yield true;});
+    
+    final result = useCases.isScanning();
+
+    result.fold(
+      (failure) => throw AssertionError(), 
+      (isScanning) => expect(isScanning, emits(true)));
+  });
+
+  test('Sould return isConected = false', () {
+    when(provider.isScanning())
+        .thenAnswer((_) async* {yield false;});
+    
+    final result = useCases.isScanning();
+
+    result.fold(
+      (failure) => throw AssertionError(), 
+      (isScanning) => expect(isScanning, emits(false)));
+  });
+
   test('Sould return an Failure', () {
 
     when(provider.fetchAllDevices())

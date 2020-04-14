@@ -37,6 +37,10 @@ class FlutterBlueDevice implements BTDevice {
       case BluetoothDeviceState.disconnecting:
         return BTDeviceState.disconnecting;
         break;
+      default:
+      // TODO: throw especific error.
+      throw Error();
+      break;
     }
 
   }

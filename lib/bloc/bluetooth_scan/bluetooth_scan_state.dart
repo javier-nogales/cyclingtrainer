@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:trainerapp/api/bluetooth/bt_device.dart';
-import 'package:trainerapp/bloc/bluetooth_scan/bloc.dart';
+part of 'bluetooth_scan_bloc.dart';
 
 abstract class BluetoothScanState extends Equatable {
   const BluetoothScanState();
@@ -35,18 +33,11 @@ class BluetoothScanListenInProgress extends BluetoothScanState {
     String outString = 'scanListenInProgress[';
     btDevices.forEach((btDevice) {
       if(btDevice != null) {
-      outString += btDevice.btId.toString() + ',';
+      outString += btDevice.btName + ',';
       }
     });
     outString += ']';
     return outString;
-  }
-}
-
-class BluetoothScanFinishSuccess extends BluetoothScanState {
-  @override
-  String toString() {
-    return 'scanFinishSuccess';
   }
 }
 

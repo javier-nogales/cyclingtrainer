@@ -25,11 +25,13 @@ abstract class DeviceStateBloc<T extends DeviceUseCases> extends Bloc<DeviceStat
               add(DeviceStateFailed());
             },
             (stateStream) {
-            _stateSubscription = stateStream.listen((state) {
-              add(DeviceStateUpdated(state));
-            });
-            add(DeviceStateStarted());
-        }
+              if (_stateSubscription == null) {
+                _stateSubscription = stateStream.listen((state) {
+                  add(DeviceStateUpdated(state));
+                });
+              }              
+              add(DeviceStateStarted());
+            }
     );
   }
 

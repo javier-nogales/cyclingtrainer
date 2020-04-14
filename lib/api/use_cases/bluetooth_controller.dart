@@ -21,5 +21,14 @@ class BluetoothController implements BluetoothUseCases {
     }
   }
 
+  @override
+  Either<Failure, Stream<bool>> isScanning() {
+    try {
+      return Right(_provider.isScanning());
+    } catch (e) {
+      return Left(SeveralFailure());
+    }
+  }
+
 
 }

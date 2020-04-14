@@ -1,17 +1,9 @@
-
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:trainerapp/bloc/bluetooth_scan/bluetooth_scan_event.dart';
+import 'package:trainerapp/bloc/bluetooth_scan/bluetooth_scan_bloc.dart';
 
 void main() {
 
   group('BluetoothScanEvent', () {
-
-//    group('BluetoothScanInitialized', () {
-//      test('toString returns correct value', () {
-//        expect(BluetoothScanInitialized().toString(), 'scanInitialized');
-//      });
-//    });
 
     group('BluetoothScanStarted', () {
       test('toString returns correct value', () {
@@ -22,12 +14,6 @@ void main() {
     group('BluetoothScanUpdated', () {
       test('toString returns correct value', () {
         expect(BluetoothScanUpdated([]).toString(), 'scanUpdated');
-      });
-    });
-
-    group('BluetoothScanFinished', () {
-      test('toString returns correct value', () {
-        expect(BluetoothScanDone().toString(), 'scanDone');
       });
     });
 

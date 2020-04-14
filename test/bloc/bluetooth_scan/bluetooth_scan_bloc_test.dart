@@ -1,13 +1,11 @@
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
-import 'package:trainerapp/api/bluetooth/flutter_blue_device.dart';
 import 'package:trainerapp/api/use_cases/bluetooth_use_cases.dart';
-import 'package:trainerapp/bloc/bluetooth_scan/bloc.dart';
+import 'package:trainerapp/bloc/bluetooth_scan/bluetooth_scan_bloc.dart';
+import 'package:trainerapp/core/error/several_failure.dart';
 
 //import '../../api/bluetooth/mock_blue_device.dart';
 import '../../api/bluetooth/mock_blue_device.dart';
@@ -19,9 +17,6 @@ class MockBluetoothUseCases extends Mock
 class MockBTDevice extends Mock
     implements BTDevice {}
 
-//class MockFlutterBlueDevice extends Mock
-//    implements FlutterBlueDevice {}
-
 void main() {
 
   group('BluetoothScanBloc', () {
@@ -31,14 +26,6 @@ void main() {
     MockBlueDevice btDevice1 = MockBlueDevice()
       ..addId("fakeId1")
       ..addName("fakeName1");
-    MockBlueDevice btDevice2 = MockBlueDevice()
-      ..addId("fakeId2")
-      ..addName("fakeName2");
-    MockBlueDevice btDevice3 = MockBlueDevice()
-      ..addId("fakeId3")
-      ..addName("fakeName3");
-
-    MockFlutterBlueProvider provider;
 
     setUp(() {
       useCases = MockBluetoothUseCases();
@@ -47,11 +34,12 @@ void main() {
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
       'Emits InitialBluetoothScanState when is created',
       build: () async => BluetoothScanBloc(useCases: useCases),
+      skip: 0,
       expect: [InitialBluetoothScanState()],
     );
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
-        'Emits InitialBluetoothScanState + BluetoothScanLoadInProgress when scan started',
+      'Emits LoadInProgress when scan started',
       build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
@@ -61,15 +49,17 @@ void main() {
         );
         return bloc;
       },
-      act: (bloc) async => bloc.add(BluetoothScanStarted()),
+      act: (bloc) async {
+        bloc.add(BluetoothScanStarted());
+      },
+      wait: const Duration(milliseconds: 300),
       expect: [
-        InitialBluetoothScanState(),
         BluetoothScanLoadInProgress()
       ],
     );
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
-      'Emits BluetoothScanListenInProgress[...] state when provider find btDevices',
+      'Emits ListenInProgress[...] state when provider find btDevices',
       build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
@@ -82,17 +72,16 @@ void main() {
       act: (bloc) async {
         bloc.add(BluetoothScanStarted());
         mockFlutterBlueProvider.addDevice(btDevice1);
-        await mockFlutterBlueProvider.addDelay(1); // only for complete states
       },
+      skip: 2,
+      wait: const Duration(milliseconds: 300),
       expect: [
-        InitialBluetoothScanState(),
-        BluetoothScanLoadInProgress(),
         BluetoothScanListenInProgress([btDevice1]),
       ],
     );
 
     blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
-      'Emits BluetoothScanFinishSuccess when scan timeout finsh (done)',
+      'Emits BluetoothScanFailure when stream emits error',
       build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
@@ -104,105 +93,35 @@ void main() {
       },
       act: (bloc) async {
         bloc.add(BluetoothScanStarted());
-        mockFlutterBlueProvider.addDevice(btDevice1);
-        await mockFlutterBlueProvider.doDone();
-        await mockFlutterBlueProvider.addDelay(1); // only for complete states
-      },
-      expect: [
-        InitialBluetoothScanState(),
-        BluetoothScanLoadInProgress(),
-        BluetoothScanListenInProgress([btDevice1]),
-        BluetoothScanFinishSuccess(),
-      ],
-    );
-
-    blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
-      'Emits BluetoothScanFailure when scan fail (error)',
-      build: () async {
-        BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
-        mockFlutterBlueProvider = MockFlutterBlueProvider();
-        when(useCases.fetchDevices())
-            .thenAnswer(
-                (_) => Right(mockFlutterBlueProvider.getDeviceList())
-        );
-        return bloc;
-      },
-      act: (bloc) async {
-        bloc.add(BluetoothScanStarted());
-        mockFlutterBlueProvider.addDevice(btDevice1);
-        await mockFlutterBlueProvider.addDelay(1); // only for complete states
         mockFlutterBlueProvider.doError();
-        await mockFlutterBlueProvider.addDelay(1); // only for complete states
       },
+      skip: 2,
+      wait: const Duration(milliseconds: 300),
       expect: [
-        InitialBluetoothScanState(),
-        BluetoothScanLoadInProgress(),
-        BluetoothScanListenInProgress([btDevice1]),
         BluetoothScanFailure(),
       ],
     );
 
-    blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
-      'Restart scan correctly',
+  blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
+      'Emits BluetoothScanFailure when useCase return failure',
       build: () async {
         BluetoothScanBloc bloc = BluetoothScanBloc(useCases: useCases);
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
             .thenAnswer(
-                (_) => Right(mockFlutterBlueProvider.getDeviceList())
+                (_) => Left(SeveralFailure())
         );
         return bloc;
       },
       act: (bloc) async {
         bloc.add(BluetoothScanStarted());
-        mockFlutterBlueProvider.addDevice(btDevice1);
-        await mockFlutterBlueProvider.doDone();
-        await mockFlutterBlueProvider.addDelay(1); // only for complete states
-        bloc.add(BluetoothScanStarted());
       },
+      skip: 2,
+      wait: const Duration(milliseconds: 300),
       expect: [
-        InitialBluetoothScanState(),
-        BluetoothScanLoadInProgress(),
-        BluetoothScanListenInProgress([btDevice1]),
-        BluetoothScanFinishSuccess(),
-        BluetoothScanLoadInProgress(),
+        BluetoothScanFailure(),
       ],
     );
-
-
-//    blocTest<BluetoothScanBloc, BluetoothScanEvent, BluetoothScanState>(
-//      'Emits correct states when re-initialize bluetooth scan',
-//      build: () {
-//        mockFlutterBlueProvider = MockFlutterBlueProvider();
-//        when(useCases.fetchDevices())
-//            .thenAnswer(
-//                (_) => Right(mockFlutterBlueProvider.getDeviceList())
-//        );
-//        return bluetoothScanBloc;
-//      },
-//      act: (bloc) async {
-//        await mockFlutterBlueProvider.addDevice(btDevice1);
-//        await mockFlutterBlueProvider.addDevice(btDevice2);
-//        await mockFlutterBlueProvider.doDone();
-//
-//        await mockFlutterBlueProvider.doNothing(); // only for complete states
-//
-//        bloc.add(BluetoothScanInitialized());
-//        await mockFlutterBlueProvider.addDevice(btDevice1);
-//        await mockFlutterBlueProvider.addDevice(btDevice2);
-//
-//        await mockFlutterBlueProvider.doNothing(); // only for complete states
-//      },
-//      expect: [
-//        InitialBluetoothScanState(),
-//        BluetoothScanLoadInProgress(),
-//        BluetoothScanListenInProgress([btDevice1, btDevice2]),
-//        BluetoothScanFinishSuccess(),
-//        InitialBluetoothScanState(),
-//        BluetoothScanLoadInProgress(),
-//        BluetoothScanListenInProgress([btDevice1, btDevice2]),
-//      ],
-//    );
 
   });
 

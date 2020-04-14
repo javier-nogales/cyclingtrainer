@@ -8,4 +8,6 @@ abstract class BluetoothProvider {
 
   Stream<List<BTDevice>> fetchAllDevices();
 
+  Stream<bool> isScanning();
+
 }

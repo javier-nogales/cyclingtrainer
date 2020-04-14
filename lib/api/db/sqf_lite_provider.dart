@@ -1,5 +1,3 @@
-
-import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/db/db_device.dart';
 import 'package:trainerapp/api/device/identifiers.dart';
 import 'package:trainerapp/api/db/db_provider.dart';

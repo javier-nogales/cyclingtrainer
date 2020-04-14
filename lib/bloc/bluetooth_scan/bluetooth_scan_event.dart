@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:trainerapp/api/bluetooth/bt_device.dart';
+part of 'bluetooth_scan_bloc.dart';
 
 abstract class BluetoothScanEvent extends Equatable {
   const BluetoothScanEvent();
@@ -7,13 +6,6 @@ abstract class BluetoothScanEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
-
-//class BluetoothScanInitialized extends BluetoothScanEvent {
-//  @override
-//  String toString() {
-//    return 'scanInitialized';
-//  }
-//}
 
 class BluetoothScanStarted extends BluetoothScanEvent {
   @override
@@ -30,13 +22,6 @@ class BluetoothScanUpdated extends BluetoothScanEvent {
   @override
   String toString() {
     return 'scanUpdated';
-  }
-}
-
-class BluetoothScanDone extends BluetoothScanEvent {
-  @override
-  String toString() {
-    return 'scanDone';
   }
 }
 

@@ -34,6 +34,7 @@ void main() {
     blocTest<HeartRateDeviceStateBloc, DeviceStateEvent, DeviceStateState>(
         'Emits HeartRateDeviceStateInitial when is created',
         build: () async => heartRateDeviceStateBloc,
+        skip: 0,
         expect: [InitialDeviceState()]
     );
 
@@ -56,7 +57,6 @@ void main() {
           await mockHeartRateDevice.addBTState(BTDeviceState.disconnected);
         },
         expect: [
-          InitialDeviceState(),
           DeviceStateLoadInProgress(),
           DeviceStateUpdateSuccess(DeviceState.notFound),
           DeviceStateUpdateSuccess(DeviceState.disconnected),
@@ -76,10 +76,9 @@ void main() {
           heartRateDeviceStateBloc.init();
           return heartRateDeviceStateBloc;
         },
-        act: (bloc) async => bloc.add(DeviceStateStarted()),
+        skip: 0,
         expect: [
           InitialDeviceState(),
-          DeviceStateLoadInProgress(),
           DeviceStateFailure(),
         ]
     );

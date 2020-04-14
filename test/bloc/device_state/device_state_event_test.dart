@@ -25,7 +25,7 @@ void main() {
       });
     });
 
-    group('DeviceStateFailedd', () {
+    group('DeviceStateFailed', () {
       test('toString returns correct value', () {
         expect(
             DeviceStateFailed().toString(),

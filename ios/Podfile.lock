@@ -6,11 +6,14 @@ PODS:
   - flutter_blue/Protos (0.0.1):
     - Flutter
     - Protobuf (~> 3.11.4)
+  - "permission_handler (5.0.0+hotfix.3)":
+    - Flutter
   - Protobuf (3.11.4)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_blue (from `.symlinks/plugins/flutter_blue/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -21,10 +24,13 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_blue:
     :path: ".symlinks/plugins/flutter_blue/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_blue: eeb381dc4727a0954dede73515f683865494b370
+  permission_handler: 4a985b5448897c27fdeadde84f7452520c0e6c58
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
 
 PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83

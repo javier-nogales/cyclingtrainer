@@ -1,10 +1,7 @@
-
 import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
-
-import 'mock_blue_device.dart';
 
 class MockFlutterBlueProvider {
 

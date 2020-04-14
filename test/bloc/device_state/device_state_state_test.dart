@@ -7,7 +7,7 @@ void main() {
 
   group('HeartRateDeviceStateState', () {
 
-    group('HeartRateDeviceStateInitial', () {
+    group('InitialDeviceState', () {
       test('toString returns correct value', () {
         expect(
             InitialDeviceState().toString(),
