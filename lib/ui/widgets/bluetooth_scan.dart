@@ -25,7 +25,7 @@ class _BluetoothScanResultHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      color: Colors.teal,
           child: Row(
             children: <Widget>[
               Text('Bluetooth devices:'),
@@ -39,9 +39,6 @@ class _BluetoothScanResultHeader extends StatelessWidget {
 class _BluetoothScanResultButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    // final bluetoothIsScanningBloc = sl<BluetoothIsScanningBloc>();
-    // final bluetoothScanBloc = BlocProvider.of<BluetoothScanBloc>(context);
 
     return Container(
       child: BlocBuilder<BluetoothIsScanningBloc, bool>(
@@ -86,6 +83,15 @@ class _BluetoothScanResultList extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 title: Text('${state.btDevices[index].btName}'),
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Alert Dialog'),
+                      content: Text('Dialog Content'),
+                    );
+                  }
+                )
               );
             },
             separatorBuilder: (BuildContext context, int index) => Divider(),

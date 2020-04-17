@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
-import 'package:trainerapp/api/use_cases/heart_rate_device_uses_cases.dart';
+import 'package:trainerapp/api/use_cases/heart_rate_device_use_cases.dart';
 import 'package:trainerapp/api/use_cases/device_use_cases.dart';
 import 'package:trainerapp/api/use_cases/trainer_device_use_cases.dart';
 import 'package:trainerapp/bloc/device_state/device_state_event.dart';

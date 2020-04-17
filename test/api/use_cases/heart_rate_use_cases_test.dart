@@ -8,7 +8,7 @@ import 'package:trainerapp/api/device/device_factory.dart';
 import 'package:trainerapp/api/device/device_package.dart';
 import 'package:trainerapp/api/device/device_repository.dart';
 import 'package:trainerapp/api/use_cases/heart_rate_device_controller.dart';
-import 'package:trainerapp/api/use_cases/heart_rate_device_uses_cases.dart';
+import 'package:trainerapp/api/use_cases/heart_rate_device_use_cases.dart';
 import 'package:trainerapp/core/error/failures.dart';
 import 'package:trainerapp/core/error/several_failure.dart';
 

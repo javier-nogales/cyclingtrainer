@@ -1,5 +1,3 @@
-
-
 import '../device/device_package.dart';
 
 class DBDevice {
