@@ -44,7 +44,7 @@ void main() {
 
     });
 
-    test('Return create correct DeviceType & DeviceClass ()', () async {
+    test('Return create correct DeviceType & DeviceClass (bkool_custom_service__cycling_power)', () async {
         
       serviceUUIDs = [bkool_custom_service__cycling_power];
       expectedDBDevice = DBDevice("fakeId", "fakeName", DeviceType.trainer, DeviceClass.bkoolTrainer);
