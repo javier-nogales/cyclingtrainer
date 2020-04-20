@@ -21,9 +21,7 @@ void main() {
 
     setUp(() {
       dbDeviceFactory = DefaultDBDeviceFactory();
-      btDevice = MockBTDevice();
-
-      
+      btDevice = MockBTDevice();      
     });
 
     test('Return create correct DeviceType & DeviceClass (org_bluetooth_service__heart_rate)', () async {
