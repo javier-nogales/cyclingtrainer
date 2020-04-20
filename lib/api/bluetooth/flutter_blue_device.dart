@@ -23,8 +23,23 @@ class FlutterBlueDevice implements BTDevice {
           _transformDeviceState(bds)
       );
 
-  BTDeviceState _transformDeviceState(BluetoothDeviceState bds) {
-    switch(bds) {
+  @override
+  Future<List<ServiceUUID>> fetchServiceUUIDs() async {
+    if (await this.btState.last == BTDeviceState.disconnected) {
+      await _device.connect();
+    }
+
+    List<BluetoothService> services = await _device.discoverServices();
+
+    return services.map((service) => ServiceUUID(service.uuid.toString()))
+                   .toList();
+  }
+
+////////////////////////////////////////////////////////////
+// private methods
+////////////////////////////////////////////////////////////
+  BTDeviceState _transformDeviceState(BluetoothDeviceState bluetoothDeviceState) {
+    switch(bluetoothDeviceState) {
       case BluetoothDeviceState.disconnected:
         return BTDeviceState.disconnected;
         break;

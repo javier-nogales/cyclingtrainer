@@ -19,6 +19,8 @@ abstract class BTDevice {
   @override
   int get hashCode => hashValues(btId.hashCode, btName.hashCode);
 
+  Future<List<ServiceUUID>> fetchServiceUUIDs();
+
 }
 
 enum BTDeviceState {

@@ -2,10 +2,11 @@
 
 import 'dart:async';
 
+import 'package:mockito/mockito.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/device/identifiers.dart';
 
-class MockBlueDevice implements BTDevice {
+class MockBlueDevice extends Mock implements BTDevice {
 
   @override
   DeviceID get btId => _id;
@@ -15,6 +16,12 @@ class MockBlueDevice implements BTDevice {
 
   @override
   Stream<BTDeviceState> get btState => _streamController.stream;
+
+  @override
+  Future<List<ServiceUUID>> fetchServiceUUIDs() {
+    // TODO: implement fetchServiceUUIDs
+    return null;
+  }
 
 //==============================================================================
 //
@@ -38,5 +45,7 @@ class MockBlueDevice implements BTDevice {
   closeStateBTStream() {
     _streamController.close();
   }
+
+
 
 }
