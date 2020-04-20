@@ -1,4 +1,4 @@
-# trainerapp
+# Cycling Trainer App
 
 A new Flutter project.
 
