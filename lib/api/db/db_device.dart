@@ -13,6 +13,11 @@ class DBDevice {
   DBDevice(this.id, this.name, this.type, this.deviceClass);
 
   @override
+  String toString() {
+    return 'DBDevice:[$id,$name,$type,$deviceClass,]';
+  }
+
+  @override
   bool operator == (Object other) =>
       identical(this, other) ||
           other is DBDevice &&

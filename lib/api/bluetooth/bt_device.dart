@@ -10,6 +10,11 @@ abstract class BTDevice {
   Stream<BTDeviceState> get btState;
 
   @override
+  String toString() {
+    return 'btDevice:[$btId,$btName,$btState]';
+  }
+
+  @override
   bool operator == (Object other) =>
       identical(this, other) ||
           other is BTDevice &&
