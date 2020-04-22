@@ -21,6 +21,7 @@ class BTDeviceCheckController extends BTDeviceCheckUseCases {
       return Right(dbDevice);
     
     } catch (e) {
+      print(e);
       return Left(SeveralFailure());
     }
   }

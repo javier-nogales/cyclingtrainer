@@ -13,7 +13,7 @@ part 'bt_device_check_state.dart';
 class BTDeviceCheckBloc extends Bloc<BTDeviceCheckEvent, BTDeviceCheckState> {
   final BTDeviceCheckUseCases _useCases;
 
-  BTDeviceCheckBloc({@required useCases}) : this._useCases = useCases;
+  BTDeviceCheckBloc({@required BTDeviceCheckUseCases useCases}) : this._useCases = useCases;
 
   @override
   BTDeviceCheckState get initialState => BTDeviceCheckInitial();

@@ -25,11 +25,13 @@ class FlutterBlueDevice implements BTDevice {
 
   @override
   Future<List<ServiceUUID>> fetchServiceUUIDs() async {
-    if (await this.btState.last == BTDeviceState.disconnected) {
+    //if (await this.btState.last == BTDeviceState.disconnected) {
       await _device.connect();
-    }
+    //}
 
     List<BluetoothService> services = await _device.discoverServices();
+
+    _device.disconnect();
 
     return services.map((service) => ServiceUUID(service.uuid.toString()))
                    .toList();
