@@ -5,12 +5,12 @@ import 'package:trainerapp/api/device/identifiers.dart';
 // Interface
 abstract class DBProvider {
 
-  Future<DBDevice> getTrainerDevice();
-
-  Future<DBDevice> getHeartRateDevice();
-
   Future<DBDevice> createDevice(DBDevice dbDevice);
 
   Future<void> deleteDevice(DeviceID id);
+
+  Future<DBDevice> getTrainerDevice();
+
+  Future<DBDevice> getHeartRateDevice();
 
 }

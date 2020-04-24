@@ -26,7 +26,7 @@ void main() {
 
     test('Return create correct DeviceType & DeviceClass (org_bluetooth_service__heart_rate)', () async {
         
-      serviceUUIDs = [org_bluetooth_service__heart_rate];
+      serviceUUIDs = [ServiceUUID('0000180d-0000-1000-8000-00805f9b34fb')];
       expectedDBDevice = DBDevice("fakeId", "fakeName", DeviceType.heartRate, DeviceClass.standardHeartRate);
 
       when(btDevice.btId)
@@ -44,7 +44,7 @@ void main() {
 
     test('Return create correct DeviceType & DeviceClass (bkool_custom_service__cycling_power)', () async {
         
-      serviceUUIDs = [bkool_custom_service__cycling_power];
+      serviceUUIDs = [ServiceUUID('f03eee01-4910-473c-be46-960948c2f59c')];
       expectedDBDevice = DBDevice("fakeId", "fakeName", DeviceType.trainer, DeviceClass.bkoolTrainer);
 
       when(btDevice.btId)

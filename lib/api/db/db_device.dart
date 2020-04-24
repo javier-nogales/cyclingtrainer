@@ -26,4 +26,18 @@ class DBDevice {
   @override
   int get hashCode => hashValues(id.hashCode, name.hashCode);
 
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "type": type.toString(),
+    "deviceClass": deviceClass.toString()
+  };
+
+  factory DBDevice.fromJson(Map<String,dynamic> json) => DBDevice(
+    json["id"],
+    json["name"],
+    DeviceType.values.firstWhere((type) => type.toString() == json["type"]),
+    DeviceClass.values.firstWhere((deviceClass) => deviceClass.toString() == json["deviceClass"]),
+  );
+
 }
