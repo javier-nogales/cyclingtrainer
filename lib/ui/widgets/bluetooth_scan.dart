@@ -116,20 +116,6 @@ class DeviceCheckDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bloc.add(BTDeviceCheckStarted(btDevice));
-    // return Dialog(
-    //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)), 
-    //   child: Container(
-    //     height: 300.0,
-    //     width: 300.0,
-    //     child: Column(
-    //       children: <Widget>[
-    //         _Title(),
-    //         _Content(),
-    //         _Actions(),
-    //       ],
-    //     ),
-    //   )
-    // );
     return BlocProvider(
       create: (context) => bloc,
       child: Dialog(
@@ -207,20 +193,21 @@ class _Actions extends StatelessWidget {
             if (state is BTDeviceCheckSuccess)
               FlatButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
-                  showDialog(
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Column(
-                          children: <Widget>[
-                            Text('LinkingDevice'),
-                            CircularProgressIndicator(),
-                          ],
-                        ),
-                      );
-                    },
-                    context: context
-                  );
+                  // BlocProvider.of<BTDeviceCheckBloc>(context).add(event);
+                  // Navigator.of(context).pop();
+                  // showDialog(
+                  //   builder: (context) {
+                  //     return AlertDialog(
+                  //       content: Column(
+                  //         children: <Widget>[
+                  //           Text('LinkingDevice'),
+                  //           CircularProgressIndicator(),
+                  //         ],
+                  //       ),
+                  //     );
+                  //   },
+                  //   context: context
+                  // );
                 }, 
                 child: Text('Link Device')
               )
