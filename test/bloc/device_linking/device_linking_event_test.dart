@@ -5,6 +5,8 @@ import 'package:trainerapp/api/db/db_device.dart';
 import 'package:trainerapp/api/device/device_package.dart';
 import 'package:trainerapp/bloc/device_linking/device_linking_bloc.dart';
 
+import '../../api/device/mock_device.dart';
+
 void main() {
 
   group('DeviceLinkingEvent', () {
@@ -31,15 +33,15 @@ void main() {
 
     group('DeviceUnlinkStarted', ()  {
       test('toString returns correct value', () {
-        DBDevice dbDevice = DBDevice("fakeId", "fakeName", DeviceType.heartRate, DeviceClass.standardHeartRate);
-        expect(DeviceUnlinkStarted(dbDevice).toString(), 'DeviceUnlinkStarted:[$dbDevice]');
+        MockDevice mockDevice = MockHeartRateDevice();
+        expect(DeviceUnlinkStarted(mockDevice.device).toString(), 'DeviceUnlinkStarted:[${mockDevice.device}]');
       });
     });
 
     group('DeviceInlinkSucceeded', () {
       test('toString return correct value', () {
         DBDevice dbDevice = DBDevice("fakeId", "fakeName", DeviceType.heartRate, DeviceClass.standardHeartRate);
-        expect(DeviceUnlinkSucceeded(dbDevice).toString(), 'DeviceUnlinkSucceeded:[$dbDevice]');
+        expect(DeviceUnlinkSucceeded().toString(), 'DeviceUnlinkSucceeded');
       });
     });
 

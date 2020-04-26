@@ -8,7 +8,7 @@ import 'package:trainerapp/api/device/device_package.dart';
 
 abstract class LinkingUseCases {
 
-  Future<Either<Failure, DBDevice>> linkDevice(BTDevice btDevice);
+  Future<Either<Failure, DBDevice>> linkDevice(DBDevice dbDevice);
 
   Future<Either<Failure, void>> unlinkDevice(Device device);
 

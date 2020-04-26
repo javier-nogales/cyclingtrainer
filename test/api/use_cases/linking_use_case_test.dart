@@ -24,21 +24,19 @@ main() {
     useCase = LinkingController(provider);
   });
 
-  group('Link tests', () {
+  group('Linking UseCases tests', () {
 
-    MockBlueDevice btDevice;
+    DBDevice dbDevice;
 
     setUp(() {
-      btDevice = MockBlueDevice()
-        ..addId("fakeId")
-        ..addName("fakeName");
+      dbDevice = DBDevice("fakeId", "fakeName", DeviceType.heartRate, DeviceClass.standardHeartRate);
     });
 
-    test('Should return linked device', () async {
+    test('linkDevice Should return linked device', () async {
 
       mockSQFLiteProvider.throwFailure = false;
 
-      final result = await useCase.linkDevice(btDevice);
+      final result = await useCase.linkDevice(dbDevice);
 
       result.fold(
               (failure) => throw AssertionError(),
@@ -47,12 +45,12 @@ main() {
 
     });
 
-    test('Should return failure', () async {
+    test('linkDevice Should return failure', () async {
 
       mockSQFLiteProvider.throwFailure = true;
       mockSQFLiteProvider.failure = SeveralFailure();
 
-      final result = await useCase.linkDevice(btDevice);
+      final result = await useCase.linkDevice(dbDevice);
 
       result.fold(
               (failure) => expect(failure, isA<SeveralFailure>()),

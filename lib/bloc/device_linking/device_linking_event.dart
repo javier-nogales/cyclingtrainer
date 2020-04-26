@@ -34,27 +34,20 @@ class DeviceLinkFailed extends DeviceLinkingEvent {
 }
 
 class DeviceUnlinkStarted extends  DeviceLinkingEvent {
-  final DBDevice dbDevice;
+  final Device device;
 
-  DeviceUnlinkStarted(this.dbDevice);
+  DeviceUnlinkStarted(this.device);
   
   @override
-  List<Object> get props => [dbDevice];
+  List<Object> get props => [device];
 
   @override
-  String toString() => 'DeviceUnlinkStarted:[$dbDevice]';
+  String toString() => 'DeviceUnlinkStarted:[$device]';
 }
 
 class DeviceUnlinkSucceeded extends DeviceLinkingEvent {
-  final DBDevice dbDevice;
-
-  DeviceUnlinkSucceeded(this.dbDevice);
-  
   @override
-  List<Object> get props => [dbDevice];
-
-  @override
-  String toString() => 'DeviceUnlinkSucceeded:[$dbDevice]';  
+  List<Object> get props => [];
 }
 
 class DeviceUnlinkFailed extends DeviceLinkingEvent {

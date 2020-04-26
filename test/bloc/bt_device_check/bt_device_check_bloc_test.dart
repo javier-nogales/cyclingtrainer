@@ -34,46 +34,7 @@ void main() {
     );
 
     blocTest<BTDeviceCheckBloc, BTDeviceCheckEvent, BTDeviceCheckState>(
-      'Emits BTDeviceCheckInProgress when BTDeviceCheckStarted is added', 
-      build: () async => BTDeviceCheckBloc(useCases: useCases),
-      act: (bloc) async => bloc.add(BTDeviceCheckStarted(btDevice)),
-      expect: [BTDeviceCheckInProgress()]
-    );
-
-    blocTest<BTDeviceCheckBloc, BTDeviceCheckEvent, BTDeviceCheckState>(
-      'Emits BTDeviceCheckSuccess when BTDeviceCheckSucceeded is added', 
-      build: () async {
-        final bloc = BTDeviceCheckBloc(useCases: useCases);
-        return bloc;
-      },
-      act: (bloc) async {
-        bloc.add(BTDeviceCheckStarted(btDevice));
-        bloc.add(BTDeviceCheckSucceeded(dbDevice));
-      },
-      expect: [
-        BTDeviceCheckInProgress(),
-        BTDeviceCheckSuccess(DBDevice("fakeId", "fakeName", DeviceType.trainer, DeviceClass.bkoolTrainer)),
-      ]
-    );
-
-    blocTest<BTDeviceCheckBloc, BTDeviceCheckEvent, BTDeviceCheckState>(
-      'Emits BTDeviceCheckFailure when BTDeviceCheckFailed is added', 
-      build: () async {
-        final bloc = BTDeviceCheckBloc(useCases: useCases);
-        return bloc;
-      },
-      act: (bloc) async {
-        bloc.add(BTDeviceCheckStarted(btDevice));
-        bloc.add(BTDeviceCheckFailed());
-      },
-      expect: [
-        BTDeviceCheckInProgress(),
-        BTDeviceCheckFailure(),
-      ]
-    );
-
-    blocTest<BTDeviceCheckBloc, BTDeviceCheckEvent, BTDeviceCheckState>(
-      'Emits BTDeviceCheckSuccess when BTDeviceCheckStarted is added', 
+      'Emits [BTDeviceCheckInProgress, BTDeviceCheckSuccess] when BTDeviceCheckStarted is added',
       build: () async {
         final bloc = BTDeviceCheckBloc(useCases: useCases);
         when(useCases.checkDevice(btDevice))
@@ -91,7 +52,7 @@ void main() {
     );
 
     blocTest<BTDeviceCheckBloc, BTDeviceCheckEvent, BTDeviceCheckState>(
-      'Emits BTDeviceCheckFailure when BTDevice check fails', 
+      'Emits [BTDeviceCheckInProgress, BTDeviceCheckFailure] when BTDevice check fails',
       build: () async {
         final bloc = BTDeviceCheckBloc(useCases: useCases);
         when(useCases.checkDevice(btDevice))

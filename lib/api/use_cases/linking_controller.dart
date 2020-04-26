@@ -15,9 +15,8 @@ class LinkingController implements LinkingUseCases {
   LinkingController(this._dataProvider);
 
   @override
-  Future<Either<Failure, DBDevice>> linkDevice(BTDevice btDevice) async {
+  Future<Either<Failure, DBDevice>> linkDevice(DBDevice dbDevice) async {
     try {
-      DBDevice dbDevice = DBDevice(btDevice.btId.toString(), btDevice.btName, DeviceType.trainer, DeviceClass.bkoolTrainer);
       DBDevice savedDevice = await _dataProvider.createDevice(dbDevice);
       return Right(savedDevice);
     } catch (e) {
