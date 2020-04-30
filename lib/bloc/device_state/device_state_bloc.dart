@@ -58,7 +58,7 @@ abstract class DeviceStateBloc<T extends DeviceUseCases> extends Bloc<DeviceStat
 
 class HeartRateDeviceStateBloc 
     extends DeviceStateBloc<HeartRateDeviceUseCases> {
-  HeartRateDeviceStateBloc({@required DeviceUseCases useCases}) : super(useCases);
+  HeartRateDeviceStateBloc({@required HeartRateDeviceUseCases useCases}) : super(useCases);
 }
 
 class TrainerDeviceStateBloc

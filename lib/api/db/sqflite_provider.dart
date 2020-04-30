@@ -1,5 +1,6 @@
 import 'package:trainerapp/api/db/db_device.dart';
 import 'package:trainerapp/api/db/sqflite_crud.dart';
+import 'package:trainerapp/api/device/device_package.dart';
 import 'package:trainerapp/api/device/identifiers.dart';
 import 'package:trainerapp/api/db/db_provider.dart';
 import 'package:trainerapp/core/error/exceptions.dart';
@@ -27,14 +28,12 @@ class SQFLiteProvider implements DBProvider {
 
   @override
   Future<DBDevice> getHeartRateDevice() {
-    // TODO: implement getHeartRateDevice
-    return null;
+    return _crudService.getDeviceByType(DeviceType.heartRate);
   }
 
   @override
   Future<DBDevice> getTrainerDevice() {
-    // TODO: implement getTrainerDevice
-    return null;
+    return _crudService.getDeviceByType(DeviceType.trainer);
   }
 
 

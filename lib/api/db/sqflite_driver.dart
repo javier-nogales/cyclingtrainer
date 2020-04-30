@@ -12,18 +12,18 @@ class SQFLiteDriver {
   SQFLiteDriver._();
 
   Future<Database> get database async {
-
     if (_database != null) return _database;
-
-    _database = await initDB();
-
-    //deleteAll();
-
+    _database = await _initDB();
     return _database;
-
   }
 
-  initDB() async {
+  Future<void> initDriver() async {
+    if (_database == null) {
+      _database = await _initDB();
+    }
+  }
+
+  Future<Database> _initDB() async {
 
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'cyclingtrainerdb.db');
@@ -31,18 +31,15 @@ class SQFLiteDriver {
     _onCreate(Database db, int version) async {
       // Database is created, create the table
       await db.execute(
-              'CREATE TABLE Devices ('
-              ' id TEXT PRIMARY KEY, '
-              ' name TEXT '
-              ' type TEXT, '
-              ' deviceClass TEXT '
-              ')'
+              'CREATE TABLE devices (id TEXT PRIMARY KEY, name TEXT, type TEXT, deviceClass TEXT)'
             );
     }
 
     _onUpgrade(Database db, int oldVersion, int newVersion) async {
       // Database version is updated, alter the table
-
+      db.execute('DROP TABLE IF EXISTS Devices');
+      db.execute('DROP TABLE IF EXISTS devices');
+      db.execute('CREATE TABLE devices (id TEXT PRIMARY KEY, name TEXT, type TEXT, deviceClass TEXT)');
     }
 
     _onOpen(Database db) async {
@@ -51,13 +48,19 @@ class SQFLiteDriver {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 3,
       onOpen: _onOpen,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
       onDowngrade: onDatabaseDowngradeDelete,
     );
 
+  }
+
+  Future<int> deleteAll() async {
+    final db = await database;
+    final result = await db.delete('devices');
+    return result;
   }
   
 }

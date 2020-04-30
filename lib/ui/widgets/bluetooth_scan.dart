@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/bloc/bluetooth_is_scanning/bluetooth_is_scanning_bloc.dart';
 import 'package:trainerapp/bloc/bt_device_check/bt_device_check_bloc.dart';
+import 'package:trainerapp/bloc/device_linking/device_linking_bloc.dart';
 import '../../injection_container.dart';
 
 import 'package:trainerapp/bloc/bluetooth_scan/bluetooth_scan_bloc.dart';
@@ -28,13 +30,20 @@ class _BluetoothScanResultHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.teal,
-          child: Row(
-            children: <Widget>[
-              Text('Bluetooth devices:'),
-              _BluetoothScanResultButton(),
-            ],
-          ),
+      height: 50,
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Colors.blue),
+          bottom: BorderSide(color: Colors.blue),
+        )
+      ),
+      child: Row(
+        children: <Widget>[
+          FaIcon(FontAwesomeIcons.bluetooth),
+          Text('Available devices:', style: Theme.of(context).textTheme.title),
+          _BluetoothScanResultButton(),
+        ],
+      ),
     );
   }
 }
@@ -109,15 +118,19 @@ class _BluetoothScanResultList extends StatelessWidget {
 class DeviceCheckDialog extends StatelessWidget {
 
   final BTDevice btDevice;
-  final bloc = sl<BTDeviceCheckBloc>();
+  final checkBloc = sl<BTDeviceCheckBloc>();
 
   DeviceCheckDialog({@required this.btDevice});
 
   @override
   Widget build(BuildContext context) {
-    bloc.add(BTDeviceCheckStarted(btDevice));
-    return BlocProvider(
-      create: (context) => bloc,
+    checkBloc.add(BTDeviceCheckStarted(btDevice));
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => checkBloc),
+        BlocProvider(create: (context) => sl<DeviceLinkingBloc>()),
+      ],
       child: Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0)
@@ -135,6 +148,26 @@ class DeviceCheckDialog extends StatelessWidget {
         )
       )
     );
+
+    // return BlocProvider(
+    //   create: (context) => checkBloc,
+    //   child: Dialog(
+    //     shape: RoundedRectangleBorder(
+    //       borderRadius: BorderRadius.circular(12.0)
+    //     ), 
+    //     child: Container(
+    //       height: 300.0,
+    //       width: 300.0,
+    //       child: Column(
+    //         children: <Widget>[
+    //           _Title(),
+    //           _Content(),
+    //           _Actions(),
+    //         ],
+    //       ),
+    //     )
+    //   )
+    // );
   }
 
 }
@@ -150,69 +183,75 @@ class _Title extends StatelessWidget {
 class _Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: BlocBuilder<BTDeviceCheckBloc, BTDeviceCheckState>(
-        builder: (context, state) {
-          if (state is BTDeviceCheckInProgress) {
-            return CircularProgressIndicator();
-          }
-          else if (state is BTDeviceCheckSuccess) {
-            return Column(
-              children: <Widget>[
-                Text('COMPATILBE DEVICE'),
-                Text(state.dbDevice.name),
-                // Text(state.dbDevice.id),
-                Text(state.dbDevice.type.toString()),
-              ],
-            );
-          }
-          else if (state is BTDeviceCheckFailure) {
-            return Text('Unsupported device');
-          }
-          else {
-            return Text('no deveria estar aqui');
-          }
-          
-        })
-      );
+    
+    return BlocBuilder<BTDeviceCheckBloc, BTDeviceCheckState>(
+      bloc: BlocProvider.of<BTDeviceCheckBloc>(context),
+      builder: (context, btDeviceCheckState) {
+
+        return BlocBuilder<DeviceLinkingBloc, DeviceLinkingState>(
+          bloc: BlocProvider.of<DeviceLinkingBloc>(context),
+          builder: (context, deviceLinkingState) {
+
+            if (btDeviceCheckState is BTDeviceCheckInProgress || deviceLinkingState is DeviceLinkInProgress) {
+              return CircularProgressIndicator();
+            }
+            else if (btDeviceCheckState is BTDeviceCheckSuccess) {
+              return Column(
+                children: <Widget>[
+                  Text('COMPATILBE DEVICE'),
+                  Text(btDeviceCheckState.dbDevice.name),
+                  // Text(state.dbDevice.id),
+                  Text(btDeviceCheckState.dbDevice.type.toString()),
+                ],
+              );
+            }
+            else if (btDeviceCheckState is BTDeviceCheckFailure) {
+              return Text('Unsupported device');
+            }
+            else {
+              return Text('no deveria estar aqui');
+            }
+
+          });
+      
+      });
   }
 }
 class _Actions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BTDeviceCheckBloc, BTDeviceCheckState>(
-      builder: (context, state) {
-        return Row(
-          children: <Widget>[
-            FlatButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              }, 
-              child:  (state is BTDeviceCheckFailure) ? Text('Acept') : Text('Back')
-            ),
-            if (state is BTDeviceCheckSuccess)
-              FlatButton(
-                onPressed: () {
-                  // BlocProvider.of<BTDeviceCheckBloc>(context).add(event);
-                  // Navigator.of(context).pop();
-                  // showDialog(
-                  //   builder: (context) {
-                  //     return AlertDialog(
-                  //       content: Column(
-                  //         children: <Widget>[
-                  //           Text('LinkingDevice'),
-                  //           CircularProgressIndicator(),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  //   context: context
-                  // );
-                }, 
-                child: Text('Link Device')
-              )
 
-          ],
+    return BlocBuilder<BTDeviceCheckBloc, BTDeviceCheckState>(
+      bloc: BlocProvider.of<BTDeviceCheckBloc>(context),
+      builder: (context, btDeviceCheckState) {
+
+        return BlocBuilder<DeviceLinkingBloc, DeviceLinkingState>(
+          bloc: BlocProvider.of<DeviceLinkingBloc>(context),
+          builder: (context, deviceLinkingState) {
+
+            return Row(
+              children: <Widget>[
+
+                if (deviceLinkingState is DeviceLinkingInitial)
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }, 
+                    child: (btDeviceCheckState is BTDeviceCheckFailure) ? Text('Acept') : Text('Back')
+                  ),
+
+                if (deviceLinkingState is DeviceLinkingInitial && btDeviceCheckState is BTDeviceCheckSuccess)
+                  FlatButton(
+                    onPressed: () {
+                      BlocProvider.of<DeviceLinkingBloc>(context).add(DeviceLinkStarted(btDeviceCheckState.dbDevice));
+                    }, 
+                    child: Text('Link Device')
+                  )
+
+              ],
+            );
+
+          },
         );
     });
   }
