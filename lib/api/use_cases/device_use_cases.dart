@@ -6,4 +6,6 @@ abstract class DeviceUseCases {
 
   Future<Either<Failure,Stream<DeviceState>>> getDeviceState();
 
+  Future<Either<Failure,Device>> getDevice();
+
 }

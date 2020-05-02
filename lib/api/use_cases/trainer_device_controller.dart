@@ -23,4 +23,14 @@ class TrainerDeviceController implements TrainerDeviceUseCases {
     }
   }
 
+  @override
+  Future<Either<Failure, Device>> getDevice() async {
+    try {
+      Device device = await _repository.getDevice();
+      return Right(device);
+    } catch (e) {
+      return Left(SeveralFailure());
+    }
+  }
+
 }

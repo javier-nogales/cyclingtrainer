@@ -35,31 +35,60 @@ void main() {
 
   });
 
-  test('Should get heart rate device state', () async {
+  group('getDeviceState method', () {
 
-    when(repository.getDevice())
-        .thenAnswer((_) async => device);
-    btDevice.addState(BTDeviceState.connected);
+    test('Should get heart rate device state', () async {
+      when(repository.getDevice())
+          .thenAnswer((_) async => device);
+      btDevice.addState(BTDeviceState.connected);
 
-    final result = await useCases.getDeviceState();
+      final result = await useCases.getDeviceState();
 
-    result.fold(
-            (failure) => throw AssertionError(),
-            (state) => expect(state, emitsAnyOf(DeviceState.values)));
+      result.fold(
+        (failure) => throw AssertionError(),
+        (state) => expect(state, emitsAnyOf(DeviceState.values))
+      );
+    });
+
+    test('Should get failure', () async {
+      when(repository.getDevice())
+          .thenThrow(SeveralFailure());
+      btDevice.addState(BTDeviceState.connected);
+
+      final result = await useCases.getDeviceState();
+
+      result.fold(
+              (failure) => expect(failure, isA<Failure>()),
+              (state) => throw AssertionError());
+    });
 
   });
 
-  test('Should get failure', () async {
+  group('getDevice method', () {
 
-    when(repository.getDevice())
-        .thenThrow(SeveralFailure());
-    btDevice.addState(BTDeviceState.connected);
+    test('Should get heart rate device', () async {
+      when(repository.getDevice())
+          .thenAnswer((_) async => device);
+      
+      final result = await useCases.getDevice();
 
-    final result = await useCases.getDeviceState();
+      result.fold(
+        (failure) => throw AssertionError(),
+        (fetchedDevice) => expect(fetchedDevice, device)
+      );
+    });
 
-    result.fold(
-            (failure) => expect(failure, isA<Failure>()),
-            (state) => throw AssertionError());
+    test('Should get failure', () async {
+      when(repository.getDevice())
+          .thenThrow(SeveralFailure());
+      
+      final result = await useCases.getDevice();
+
+      result.fold(
+        (failure) => expect(failure, isA<Failure>()),
+        (fetchedDevice) => throw AssertionError()
+      );
+    });
 
   });
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trainerapp/ui/widgets/devices_button.dart';
+import 'package:trainerapp/ui/widgets/dashboard_button.dart';
+import 'package:trainerapp/ui/widgets/devices_board.dart';
 
 import 'devices_screen.dart';
 
@@ -19,7 +20,11 @@ class HomeScreen extends StatelessWidget {
 
           Center(
             child: RawMaterialButton(
-              child: DashboardButton(),
+              child: DashboardButton(
+                title: DashboardButtonTitle(text: 'Bluetooth Devices',),
+                separator: DashboardButtonSeparator(),
+                board: DevicesStatusBoard(),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,

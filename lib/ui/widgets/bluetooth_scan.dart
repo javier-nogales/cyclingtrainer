@@ -9,7 +9,10 @@ import '../../injection_container.dart';
 
 import 'package:trainerapp/bloc/bluetooth_scan/bluetooth_scan_bloc.dart';
 
+import 'custom_dialog.dart';
+
 class BluetoothScanResult extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -75,7 +78,7 @@ class _BluetoothScanResultButton extends StatelessWidget {
 class _BluetoothScanResultList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // final BluetoothScanBloc bluetoothScanBloc = BlocProvider.of<BluetoothScanBloc>(context);
+    final DeviceLinkingBloc deviceLinkingBloc = BlocProvider.of<DeviceLinkingBloc>(context);
     return BlocBuilder<BluetoothScanBloc, BluetoothScanState>(
       bloc: BlocProvider.of<BluetoothScanBloc>(context),
       builder: (context, state) {
@@ -98,7 +101,10 @@ class _BluetoothScanResultList extends StatelessWidget {
                   onTap: () => showDialog(
                     context: context,
                     builder: (context) {
-                      return DeviceCheckDialog(btDevice: btDevice);
+                      return DeviceCheckDialog(
+                        btDevice: btDevice,
+                        deviceLinkingBloc: deviceLinkingBloc,
+                      );
                     }
                   ), 
                 );
@@ -118,9 +124,10 @@ class _BluetoothScanResultList extends StatelessWidget {
 class DeviceCheckDialog extends StatelessWidget {
 
   final BTDevice btDevice;
+  final DeviceLinkingBloc deviceLinkingBloc;
   final checkBloc = sl<BTDeviceCheckBloc>();
 
-  DeviceCheckDialog({@required this.btDevice});
+  DeviceCheckDialog({@required this.btDevice, @required this.deviceLinkingBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -129,45 +136,15 @@ class DeviceCheckDialog extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => checkBloc),
-        BlocProvider(create: (context) => sl<DeviceLinkingBloc>()),
+        //BlocProvider(create: (context) => sl<DeviceLinkingBloc>()),
       ],
-      child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0)
-        ), 
-        child: Container(
-          height: 300.0,
-          width: 300.0,
-          child: Column(
-            children: <Widget>[
-              _Title(),
-              _Content(),
-              _Actions(),
-            ],
-          ),
-        )
+      child: CustomDialog(
+        title: _Title(),
+        content: _Content(deviceLinkingBloc: deviceLinkingBloc,),
+        actions: _Actions(deviceLinkingBloc: deviceLinkingBloc,),
       )
     );
 
-    // return BlocProvider(
-    //   create: (context) => checkBloc,
-    //   child: Dialog(
-    //     shape: RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.circular(12.0)
-    //     ), 
-    //     child: Container(
-    //       height: 300.0,
-    //       width: 300.0,
-    //       child: Column(
-    //         children: <Widget>[
-    //           _Title(),
-    //           _Content(),
-    //           _Actions(),
-    //         ],
-    //       ),
-    //     )
-    //   )
-    // );
   }
 
 }
@@ -181,6 +158,11 @@ class _Title extends StatelessWidget {
   }
 }
 class _Content extends StatelessWidget {
+
+  final DeviceLinkingBloc deviceLinkingBloc;
+
+  _Content({@required this.deviceLinkingBloc});
+
   @override
   Widget build(BuildContext context) {
     
@@ -189,7 +171,7 @@ class _Content extends StatelessWidget {
       builder: (context, btDeviceCheckState) {
 
         return BlocBuilder<DeviceLinkingBloc, DeviceLinkingState>(
-          bloc: BlocProvider.of<DeviceLinkingBloc>(context),
+          bloc: deviceLinkingBloc,
           builder: (context, deviceLinkingState) {
 
             if (btDeviceCheckState is BTDeviceCheckInProgress || deviceLinkingState is DeviceLinkInProgress) {
@@ -218,6 +200,11 @@ class _Content extends StatelessWidget {
   }
 }
 class _Actions extends StatelessWidget {
+
+  final DeviceLinkingBloc deviceLinkingBloc;
+
+  _Actions({@required this.deviceLinkingBloc});
+
   @override
   Widget build(BuildContext context) {
 
@@ -226,7 +213,7 @@ class _Actions extends StatelessWidget {
       builder: (context, btDeviceCheckState) {
 
         return BlocBuilder<DeviceLinkingBloc, DeviceLinkingState>(
-          bloc: BlocProvider.of<DeviceLinkingBloc>(context),
+          bloc: deviceLinkingBloc,
           builder: (context, deviceLinkingState) {
 
             return Row(
@@ -243,7 +230,7 @@ class _Actions extends StatelessWidget {
                 if (deviceLinkingState is DeviceLinkingInitial && btDeviceCheckState is BTDeviceCheckSuccess)
                   FlatButton(
                     onPressed: () {
-                      BlocProvider.of<DeviceLinkingBloc>(context).add(DeviceLinkStarted(btDeviceCheckState.dbDevice));
+                      deviceLinkingBloc.add(DeviceLinkStarted(btDeviceCheckState.dbDevice));
                     }, 
                     child: Text('Link Device')
                   )
@@ -256,31 +243,3 @@ class _Actions extends StatelessWidget {
     });
   }
 }
-
-
-Dialog errorDialog = Dialog(
-  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)), //this right here
-  child: Container(
-    height: 300.0,
-    width: 300.0,
-
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding:  EdgeInsets.all(15.0),
-          child: Text('Cool', style: TextStyle(color: Colors.red),),
-        ),
-        Padding(
-          padding: EdgeInsets.all(15.0),
-          child: Text('Awesome', style: TextStyle(color: Colors.red),),
-        ),
-        Padding(padding: EdgeInsets.only(top: 50.0)),
-        FlatButton(onPressed: (){
-         //Navigator.of(context).pop();
-        },
-            child: Text('Got It!', style: TextStyle(color: Colors.purple, fontSize: 18.0),))
-      ],
-    ),
-  ),
-);

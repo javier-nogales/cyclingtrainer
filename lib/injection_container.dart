@@ -22,6 +22,7 @@ import 'api/use_cases/heart_rate_device_use_cases.dart';
 import 'api/use_cases/trainer_device_use_cases.dart';
 import 'bloc/bluetooth_is_scanning/bluetooth_is_scanning_bloc.dart';
 import 'bloc/bluetooth_scan/bluetooth_scan_bloc.dart';
+import 'bloc/device/device_bloc.dart';
 import 'bloc/device_linking/device_linking_bloc.dart';
 import 'bloc/device_state/device_state_bloc.dart';
 
@@ -37,11 +38,15 @@ void init() {
     )
   );
 
+  sl.registerFactory( () => TrainerDeviceBloc(useCases:sl()) );
+
   sl.registerFactory(
     () => HeartRateDeviceStateBloc(
       useCases: sl()
     )
   );
+
+  sl.registerFactory( () => HeartRateDeviceBloc(useCases:sl()) );
 
   sl.registerFactory(
     () => BluetoothScanBloc(

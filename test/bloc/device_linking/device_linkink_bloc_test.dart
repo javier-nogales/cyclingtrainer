@@ -79,7 +79,7 @@ void main() {
   );
 
   blocTest<DeviceLinkingBloc, DeviceLinkingEvent, DeviceLinkingState>(
-      'Returns DeviceUnlinkingInProgress when DeviceUnlinkStarted is added',
+      'Returns DeviceUnlinkingFailure when DeviceUnlinkFailed is added',
       build: () async {
         when(useCases.unlinkDevice(modkDevice.device))
             .thenAnswer((_) async => Left(SeveralFailure()));
