@@ -13,27 +13,31 @@ class Devices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final trainerDeviceStateBloc = sl<TrainerDeviceStateBloc>();
-    final heartRateDeviceStateBloc = sl<HeartRateDeviceStateBloc>();
-    final trainerDeviceBloc = sl<TrainerDeviceBloc>();
-    final heartRateDeviceBloc = sl<HeartRateDeviceBloc>();
+    // final trainerDeviceStateBloc = BlocProvider.of<TrainerDeviceStateBloc>(context);
+    // final heartRateDeviceStateBloc = BlocProvider.of<HeartRateDeviceStateBloc>(context);
     final deviceLinkingBloc = BlocProvider.of<DeviceLinkingBloc>(context);
+    // final trainerDeviceBloc = sl<TrainerDeviceBloc>(param1: deviceLinkingBloc);
+    // final heartRateDeviceBloc = sl<HeartRateDeviceBloc>(param1: deviceLinkingBloc);
+    
+    final trainerDeviceBloc = BlocProvider.of<TrainerDeviceBloc>(context);
+    final heartRateDeviceBloc = BlocProvider.of<HeartRateDeviceBloc>(context);
+
+    trainerDeviceBloc.add(DeviceStarted());
+    heartRateDeviceBloc.add(DeviceStarted());
 
     return Container(
       child: MultiBlocProvider(
         providers: [
           BlocProvider<TrainerDeviceStateBloc>(
             create: (BuildContext context) {
-              //TrainerDeviceStateBloc bloc = sl<TrainerDeviceStateBloc>();
-              trainerDeviceStateBloc.init();
-              return trainerDeviceStateBloc;
+              BlocProvider.of<TrainerDeviceStateBloc>(context).init();
+              return BlocProvider.of<TrainerDeviceStateBloc>(context);
             }
           ),
           BlocProvider<HeartRateDeviceStateBloc>(
             create: (BuildContext context) {
-              //HeartRateDeviceStateBloc bloc = sl<HeartRateDeviceStateBloc>();
-              heartRateDeviceStateBloc.init();
-              return heartRateDeviceStateBloc;
+              BlocProvider.of<HeartRateDeviceStateBloc>(context).init();
+              return BlocProvider.of<HeartRateDeviceStateBloc>(context);
             }
           )
         ],
@@ -69,6 +73,7 @@ class Devices extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 50),
     );
   }
+
 }
 
 
@@ -84,28 +89,112 @@ class DeviceInfoDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<DeviceBloc>(create: (BuildContext context) => deviceBloc),
-        BlocProvider<DeviceLinkingBloc>(create: (BuildContext context) => deviceLinkingBloc),
-      ],
-      child: CustomDialog(
-        title: Text('Device Info'),
-        content: _DeviceInfoContent(),
-        actions: Text('Device Actions'),
+    return CustomDialog(
+      title: Text('Device Info'),
+      content: _DeviceInfoContent(
+        deviceLinkingBloc: deviceLinkingBloc,
+        deviceBloc: deviceBloc,
+      ),
+      actions: _DeviceInfoActions(
+        deviceLinkingBloc: deviceLinkingBloc,
+        deviceBloc: deviceBloc,
       ),
     );
+    // return MultiBlocProvider(
+    //   providers: [
+    //     BlocProvider<DeviceBloc>(create: (BuildContext context) => deviceBloc),
+    //     //BlocProvider<DeviceLinkingBloc>(create: (BuildContext context) => deviceLinkingBloc),
+    //   ],
+    //   child: CustomDialog(
+    //     title: Text('Device Info'),
+    //     content: _DeviceInfoContent(deviceLinkingBloc: deviceLinkingBloc,),
+    //     actions: _DeviceInfoActions(deviceLinkingBloc: deviceLinkingBloc),
+    //   ),
+    // );
   }
 }
 
 class _DeviceInfoContent extends StatelessWidget {
+
+  final DeviceBloc deviceBloc;
+  final DeviceLinkingBloc deviceLinkingBloc;
+
+  _DeviceInfoContent({
+    @required this.deviceLinkingBloc,
+    @required this.deviceBloc
+  });
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
-      bloc: BlocProvider.of<DeviceBloc>(context),
-      builder: (context, state) {
-        return Text('hemos llegado');
+    return BlocBuilder<DeviceBloc, DeviceBlocState>(
+      bloc: deviceBloc,
+      builder: (context, deviceState) {
+        return BlocBuilder<DeviceLinkingBloc, DeviceLinkingState>(
+          bloc: deviceLinkingBloc,
+          builder: (context, linkingState) {
+
+            if (deviceState is DeviceLoadInProgress || linkingState is DeviceUnlinkInProgress) {
+              return CircularProgressIndicator();
+            }
+            else if (deviceState is DeviceUpdateSuccess && !(linkingState is DeviceUnlinkSuccess)) {
+              return Text(deviceState.device.name);
+            }
+            else if (deviceState is DeviceUpdateSuccess && linkingState is DeviceUnlinkSuccess) {
+              return Text('Unlink Success');
+            }
+            return Text('hemos llegado');  
+
+          },
+        );
       }
     );
+  }
+}
+
+class _DeviceInfoActions extends StatelessWidget {
+  
+  final DeviceBloc deviceBloc;
+  final DeviceLinkingBloc deviceLinkingBloc;
+
+  _DeviceInfoActions({
+    @required this.deviceLinkingBloc,
+    @required this.deviceBloc
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DeviceBloc, DeviceBlocState>(
+      bloc: deviceBloc,
+      builder: (context, deviceState) {
+
+        return BlocBuilder<DeviceLinkingBloc, DeviceLinkingState>(
+          bloc: deviceLinkingBloc,
+          builder: (context, deviceLinkingState) {
+            
+            return Row(
+              children: <Widget>[
+
+                if (deviceState is DeviceUpdateSuccess)
+                  FlatButton(
+                    onPressed: () {
+                     deviceLinkingBloc.add(DeviceUnlinkStarted(deviceState.device));
+                    }, 
+                    child: Text('Unlink Device')
+                  ),
+
+                // if (deviceLinkingState is DeviceLinkingInitial)
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }, 
+                    child: Text('Done')
+                  ),
+
+              ],
+            );
+
+          },
+        );
+    });
   }
 }

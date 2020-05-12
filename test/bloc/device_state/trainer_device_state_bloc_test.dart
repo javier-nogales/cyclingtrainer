@@ -6,6 +6,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/device/device_package.dart';
 import 'package:trainerapp/api/use_cases/trainer_device_use_cases.dart';
+import 'package:trainerapp/bloc/device_linking/device_linking_bloc.dart';
 import 'package:trainerapp/bloc/device_state/bloc.dart';
 import 'package:trainerapp/core/error/several_failure.dart';
 
@@ -14,17 +15,23 @@ import '../../api/device/mock_device.dart';
 class MockTrainerDeviceUseCases extends Mock
     implements TrainerDeviceUseCases {}
 
+class MockDeviceLinkingBloc extends MockBloc<DeviceLinkingEvent, DeviceLinkingState>
+    implements DeviceLinkingBloc {}
+
 void main() {
 
   group('TrainerDeviceStateBloc', () {
 
     TrainerDeviceUseCases useCases;
+    MockDeviceLinkingBloc mockDeviceLinkingBloc;
     TrainerDeviceStateBloc trainerDeviceStateBloc;
     MockTrainerDevice mockTrainerDevice;
 
     setUp(() {
       useCases = MockTrainerDeviceUseCases();
-      trainerDeviceStateBloc = TrainerDeviceStateBloc(useCases: useCases);
+      mockDeviceLinkingBloc = MockDeviceLinkingBloc();
+      trainerDeviceStateBloc = TrainerDeviceStateBloc(useCases: useCases,
+                                                      linkingBloc: mockDeviceLinkingBloc);
     });
 
     blocTest<TrainerDeviceStateBloc, DeviceStateEvent, DeviceStateState>(

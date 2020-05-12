@@ -1,4 +1,3 @@
-
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/db/db_device.dart';
 import 'package:trainerapp/api/device/device_package.dart';
@@ -6,9 +5,12 @@ import 'package:trainerapp/api/device/device_factory.dart';
 import 'package:trainerapp/api/bluetooth/bluetooth_provider.dart';
 import 'package:trainerapp/api/db/db_provider.dart';
 
+//TODO: (!!Important) MERGE both class DeviceRepository<T> + DeviceRepositoryBase
 abstract class DeviceRepository<T extends Device> {
 
   Future<T> getDevice();
+
+  void reset();
 
 }
 
@@ -22,16 +24,24 @@ abstract class DeviceRepositoryBase<T extends Device>
 
   DeviceRepositoryBase(this._dataProvider, this._bluetoothProvider, this._factory);
 
+  @override
+  reset() {
+    _device = null;
+  }
+
 }
 
 class TrainerDeviceRepository extends DeviceRepositoryBase<TrainerDevice> {
 
-  TrainerDeviceRepository(DBProvider dataProvider,
-      BluetoothProvider bluetoothProvider,
-      DeviceFactory<TrainerDevice> factory)
-      : super(dataProvider,
-      bluetoothProvider,
-      factory);
+  TrainerDeviceRepository(
+    DBProvider dataProvider,
+    BluetoothProvider bluetoothProvider,
+    DeviceFactory<TrainerDevice> factory
+  ) : super(
+    dataProvider,
+    bluetoothProvider,
+    factory
+  );
 
   @override
   Future<TrainerDevice> getDevice() async {
@@ -60,7 +70,7 @@ class HeartRateDeviceRepository extends DeviceRepositoryBase<HeartRateDevice> {
       : super(dataProvider,
       bluetoothProvider,
       factory);
-
+      
   @override
   Future<HeartRateDevice> getDevice() async {
     if (_device == null) {

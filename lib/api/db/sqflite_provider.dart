@@ -11,8 +11,8 @@ class SQFLiteProvider implements DBProvider {
 
   @override
   Future<DBDevice> createDevice(DBDevice dbDevice) async {
-    final result = await _crudService.createDevice(dbDevice);
-    if (result == 1) {
+    final result = await _crudService.createDevice(dbDevice); // return inserted id
+    if (result > 0) {
       return dbDevice;
     } else {
       throw PersistenceException();
@@ -21,9 +21,10 @@ class SQFLiteProvider implements DBProvider {
   }
 
   @override
-  Future<void> deleteDevice(DeviceID id) {
-    // TODO: implement deleteDevice
-    return null;
+  Future<void> deleteDevice(DeviceID id) async {
+    final result = await _crudService.deleteDevice(id);
+    if (result != 1)
+      throw PersistenceException();
   }
 
   @override

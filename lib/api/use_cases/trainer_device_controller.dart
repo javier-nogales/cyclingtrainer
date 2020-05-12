@@ -9,7 +9,7 @@ import 'package:trainerapp/api/use_cases/trainer_device_use_cases.dart';
 
 class TrainerDeviceController implements TrainerDeviceUseCases {
 
-  final DeviceRepository<TrainerDevice> _repository;
+  final TrainerDeviceRepository _repository;
 
   TrainerDeviceController(this._repository);
 

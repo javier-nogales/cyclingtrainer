@@ -14,6 +14,7 @@ import 'api/bluetooth/bluetooth_provider.dart';
 import 'api/bluetooth/flutter_blue_provider.dart';
 import 'api/db/db_device_factory.dart';
 import 'api/db/db_provider.dart';
+import 'api/device/device_package.dart';
 import 'api/device/device_repository.dart';
 import 'api/use_cases/bluetooth_use_cases.dart';
 import 'api/use_cases/bt_device_check_use_cases.dart';
@@ -32,21 +33,47 @@ void init() {
 
   // Factory
 
-  sl.registerFactory(
-    () => TrainerDeviceStateBloc(
-      useCases: sl()
+  // sl.registerFactory(
+  //   () => TrainerDeviceStateBloc(
+  //     useCases: sl(),
+  //     linkingBloc: sl(),
+  //   )
+  // );
+
+  // sl.registerFactory(
+  //   () => HeartRateDeviceStateBloc(
+  //     useCases: sl(),
+  //     linkingBloc: sl(),
+  //   )
+  // );
+
+  sl.registerFactoryParam<TrainerDeviceStateBloc, DeviceLinkingBloc, void>(
+    (linkingBloc1, _) => TrainerDeviceStateBloc(
+      useCases: sl(),
+      linkingBloc: linkingBloc1
     )
   );
 
-  sl.registerFactory( () => TrainerDeviceBloc(useCases:sl()) );
-
-  sl.registerFactory(
-    () => HeartRateDeviceStateBloc(
-      useCases: sl()
+  sl.registerFactoryParam<HeartRateDeviceStateBloc, DeviceLinkingBloc, void>(
+    (linkingBloc, _) => HeartRateDeviceStateBloc(
+      useCases: sl(),
+      linkingBloc: linkingBloc,
     )
   );
 
-  sl.registerFactory( () => HeartRateDeviceBloc(useCases:sl()) );
+  sl.registerFactoryParam<TrainerDeviceBloc, DeviceLinkingBloc, void>( 
+    (linkingBloc, _) => TrainerDeviceBloc(
+      useCases:sl(),
+      linkingBloc: linkingBloc,
+    ) 
+  );
+
+  sl.registerFactoryParam<HeartRateDeviceBloc, DeviceLinkingBloc, void>( 
+    (linkingBloc, _) => HeartRateDeviceBloc(
+      useCases:sl(),
+      linkingBloc: linkingBloc,
+    ) 
+  );
 
   sl.registerFactory(
     () => BluetoothScanBloc(
@@ -72,22 +99,65 @@ void init() {
     )
   );
 
+  // sl.registerLazySingleton<DeviceLinkingBloc>(
+  //   () => DeviceLinkingBloc(useCases: sl())
+  // );
+
   // Lazy Singleton
+  sl.registerLazySingleton<TrainerDeviceRepository>(
+    () => TrainerDeviceRepository(
+      sl(),
+      sl(),
+      TrainerDeviceFactory()
+    )
+  );
+
+  // sl.registerLazySingleton<DeviceRepository<TrainerDevice>>(
+  //   () => TrainerDeviceRepository(
+  //     sl(),
+  //     sl(),
+  //     TrainerDeviceFactory()
+  //   )
+  // );
+
+  sl.registerLazySingleton<HeartRateDeviceRepository>(
+    () => HeartRateDeviceRepository(
+      sl(),
+      sl(),
+      HeartRateDeviceFactory()
+    )
+  );
+
+  // sl.registerLazySingleton<DeviceRepository<HeartRateDevice>>(
+  //   () => HeartRateDeviceRepository(
+  //     sl(),
+  //     sl(),
+  //     HeartRateDeviceFactory()
+  //   )
+  // );
 
   sl.registerLazySingleton<TrainerDeviceUseCases>(
     () => TrainerDeviceController(
-      TrainerDeviceRepository(sl(), sl(), TrainerDeviceFactory())
+      sl()
+      // TrainerDeviceRepository(sl(), sl(), TrainerDeviceFactory())
     )
   );
 
   sl.registerLazySingleton<HeartRateDeviceUseCases>(
     () => HeartRateDeviceController(
-      HeartRateDeviceRepository(sl(), sl(), HeartRateDeviceFactory())
+      sl()
+      // HeartRateDeviceRepository(sl(), sl(), HeartRateDeviceFactory())
     )
   );
 
   sl.registerLazySingleton<LinkingUseCases>(
-    () => LinkingController(sl())
+    () => LinkingController(
+      sl(), 
+      sl(),
+      sl(),
+      // HeartRateDeviceRepository(sl(), sl(), HeartRateDeviceFactory()), 
+      // TrainerDeviceRepository(sl(), sl(), TrainerDeviceFactory())
+    )
   );
   
   sl.registerLazySingleton<DBProvider>(

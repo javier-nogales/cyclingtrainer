@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
               child: DashboardButton(
                 title: DashboardButtonTitle(text: 'Bluetooth Devices',),
                 separator: DashboardButtonSeparator(),
-                board: DevicesStatusBoard(),
+                board: Text('*** DEVICES ***'), //DevicesStatusBoard(),
               ),
               onPressed: () {
                 Navigator.push(

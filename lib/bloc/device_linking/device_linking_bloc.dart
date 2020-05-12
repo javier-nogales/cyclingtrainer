@@ -56,4 +56,9 @@ class DeviceLinkingBloc extends Bloc<DeviceLinkingEvent, DeviceLinkingState> {
       );
     });
   }
+
+  @override
+  Future<void> close() {
+    return super.close();
+  }
 }

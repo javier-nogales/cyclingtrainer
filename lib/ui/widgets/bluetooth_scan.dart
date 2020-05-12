@@ -152,8 +152,15 @@ class DeviceCheckDialog extends StatelessWidget {
 class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Linking BT Device'),
+
+    return BlocBuilder(
+      bloc: BlocProvider.of<BTDeviceCheckBloc>(context),
+      builder: (context, state) {
+        if (state is BTDeviceCheckInProgress)
+          return Text('Checking device');
+        else 
+          return Text('Linking BT Device');
+      },
     );
   }
 }
@@ -219,7 +226,7 @@ class _Actions extends StatelessWidget {
             return Row(
               children: <Widget>[
 
-                if (deviceLinkingState is DeviceLinkingInitial)
+                if (btDeviceCheckState is BTDeviceCheckSuccess || btDeviceCheckState is BTDeviceCheckFailure)
                   FlatButton(
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -227,7 +234,8 @@ class _Actions extends StatelessWidget {
                     child: (btDeviceCheckState is BTDeviceCheckFailure) ? Text('Acept') : Text('Back')
                   ),
 
-                if (deviceLinkingState is DeviceLinkingInitial && btDeviceCheckState is BTDeviceCheckSuccess)
+                // if (deviceLinkingState is DeviceLinkingInitial && btDeviceCheckState is BTDeviceCheckSuccess)
+                if (btDeviceCheckState is BTDeviceCheckSuccess)
                   FlatButton(
                     onPressed: () {
                       deviceLinkingBloc.add(DeviceLinkStarted(btDeviceCheckState.dbDevice));
