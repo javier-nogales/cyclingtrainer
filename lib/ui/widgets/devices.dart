@@ -47,24 +47,32 @@ class Devices extends StatelessWidget {
             Spacer(),
             RawMaterialButton(
               child: DeviceStatusIcon<TrainerDeviceStateBloc>(icon: Icons.directions_bike),
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) => DeviceInfoDialog(
-                  deviceBloc: trainerDeviceBloc,
-                  deviceLinkingBloc: deviceLinkingBloc,
-                )                
-              ),
+              onPressed: () {
+                DeviceBlocState trainerState = trainerDeviceBloc.state;
+                if (trainerState is DeviceUpdateSuccess && trainerState.device != null)
+                  return showDialog(
+                    context: context,
+                    builder: (context) => DeviceInfoDialog(
+                      deviceBloc: trainerDeviceBloc,
+                      deviceLinkingBloc: deviceLinkingBloc,
+                    )                
+                  );
+              },
             ),
             Spacer(),
             RawMaterialButton(
               child: DeviceStatusIcon<HeartRateDeviceStateBloc>(icon: FontAwesomeIcons.heartbeat),
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) => DeviceInfoDialog(
-                  deviceBloc: heartRateDeviceBloc,
-                  deviceLinkingBloc: deviceLinkingBloc,
-                )
-              ),
+              onPressed: () {
+                DeviceBlocState hrState = heartRateDeviceBloc.state;
+                if (hrState is DeviceUpdateSuccess && hrState.device != null)
+                  return showDialog(
+                    context: context,
+                    builder: (context) => DeviceInfoDialog(
+                      deviceBloc: heartRateDeviceBloc,
+                      deviceLinkingBloc: deviceLinkingBloc,
+                    )
+                  );
+              },
             ),
             Spacer(),
           ],
