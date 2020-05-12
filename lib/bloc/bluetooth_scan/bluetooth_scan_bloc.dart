@@ -20,8 +20,8 @@ class BluetoothScanBloc extends Bloc<BluetoothScanEvent, BluetoothScanState> {
   @override
   BluetoothScanState get initialState => InitialBluetoothScanState();
 
-  void _init() {
-    final result = _useCases.fetchDevices();
+  void _init() async {
+    final result = await _useCases.fetchDevices();
     result.fold(
             (failure) {
               add(BluetoothScanFailed());

@@ -31,8 +31,8 @@ main() {
     mockSQFLiteProvider = MockSQFLiteProvider();
     provider = mockSQFLiteProvider;
     useCase = LinkingController(provider,
-                                mockHeartRateDeviceRepository,
-                                mockTrainerDeviceRepository);
+                                mockTrainerDeviceRepository,
+                                mockHeartRateDeviceRepository,);
   });
 
   group('Linking UseCases tests', () {

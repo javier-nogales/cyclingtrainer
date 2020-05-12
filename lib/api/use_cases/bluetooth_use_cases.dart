@@ -5,7 +5,7 @@ import 'package:trainerapp/api/bluetooth/bt_device.dart';
 
 abstract class BluetoothUseCases {
 
-  Either<Failure,Stream<List<BTDevice>>> fetchDevices();
+  Future<Either<Failure,Stream<List<BTDevice>>>> fetchDevices();
 
   Either<Failure,Stream<bool>> isScanning();
 

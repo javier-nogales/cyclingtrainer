@@ -28,6 +28,11 @@ class SQFLiteProvider implements DBProvider {
   }
 
   @override
+  Future<List<DBDevice>> getAllDevices() {
+    return _crudService.readAll();
+  }
+
+  @override
   Future<DBDevice> getHeartRateDevice() {
     return _crudService.getDeviceByType(DeviceType.heartRate);
   }
@@ -36,7 +41,5 @@ class SQFLiteProvider implements DBProvider {
   Future<DBDevice> getTrainerDevice() {
     return _crudService.getDeviceByType(DeviceType.trainer);
   }
-
-
 
 }

@@ -39,4 +39,10 @@ class MockSQFLiteProvider implements DBProvider {
     if (_throwFailure && _failure != null)
       throw _failure;
   }
+
+  @override
+  Future<List<DBDevice>> getAllDevices() {
+    // TODO: implement getAllDevices
+    return null;
+  }
 }

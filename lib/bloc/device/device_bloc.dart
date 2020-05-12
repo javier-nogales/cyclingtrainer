@@ -58,8 +58,8 @@ abstract class DeviceBloc extends Bloc<DeviceEvent, DeviceBlocState> {
 
   @override
   Future<void> close() {
-    // if (_linkingBlocSubscription != null)
-    //   _linkingBlocSubscription.cancel();
+    if (_linkingBlocSubscription != null)
+      _linkingBlocSubscription.cancel();
     return super.close();
   }
 

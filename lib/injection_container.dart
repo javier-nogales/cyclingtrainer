@@ -165,7 +165,7 @@ void init() {
   );
 
   sl.registerLazySingleton<BluetoothUseCases>(
-    () => BluetoothController(sl())
+    () => BluetoothController(sl(), sl())
   );
 
   sl.registerLazySingleton<BluetoothProvider>(

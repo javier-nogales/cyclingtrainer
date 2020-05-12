@@ -9,6 +9,8 @@ abstract class DBProvider {
 
   Future<void> deleteDevice(DeviceID id);
 
+  Future<List<DBDevice>> getAllDevices();
+
   Future<DBDevice> getTrainerDevice();
 
   Future<DBDevice> getHeartRateDevice();

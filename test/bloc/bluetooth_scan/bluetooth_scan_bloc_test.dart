@@ -45,7 +45,7 @@ void main() {
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
             .thenAnswer(
-                (_) => Right(mockFlutterBlueProvider.getDeviceList())
+                (_) async => Right(mockFlutterBlueProvider.getDeviceList())
         );
         return bloc;
       },
@@ -65,7 +65,7 @@ void main() {
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
             .thenAnswer(
-                (_) => Right(mockFlutterBlueProvider.getDeviceList())
+                (_) async => Right(mockFlutterBlueProvider.getDeviceList())
         );
         return bloc;
       },
@@ -87,7 +87,7 @@ void main() {
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
             .thenAnswer(
-                (_) => Right(mockFlutterBlueProvider.getDeviceList())
+                (_) async => Right(mockFlutterBlueProvider.getDeviceList())
         );
         return bloc;
       },
@@ -109,7 +109,7 @@ void main() {
         mockFlutterBlueProvider = MockFlutterBlueProvider();
         when(useCases.fetchDevices())
             .thenAnswer(
-                (_) => Left(SeveralFailure())
+                (_) async => Left(SeveralFailure())
         );
         return bloc;
       },

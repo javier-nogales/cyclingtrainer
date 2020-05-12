@@ -1,6 +1,7 @@
 
 import 'package:test/test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:trainerapp/api/db/db_provider.dart';
 import 'package:trainerapp/core/error/failures.dart';
 import 'package:trainerapp/core/error/several_failure.dart';
 import 'package:trainerapp/api/use_cases/bluetooth_controller.dart';
@@ -13,24 +14,28 @@ import '../bluetooth/mock_flutter_blue_provider.dart';
 class MockBluetoothProvider extends Mock
     implements BluetoothProvider {}
 
+class MockDBPRovider extends Mock
+    implements DBProvider {}
+
 void main() {
 
-  BluetoothProvider provider;
+  BluetoothProvider btProvider;
+  DBProvider dbProvider;
   BluetoothUseCases useCases;
   MockFlutterBlueProvider mockFlutterBlueProvider;
 
   setUp(() {
-    provider = MockBluetoothProvider();
-    useCases = BluetoothController(provider);
+    btProvider = MockBluetoothProvider();
+    useCases = BluetoothController(btProvider, dbProvider);
     mockFlutterBlueProvider = MockFlutterBlueProvider();
   });
 
-  test('Sould return an Stream<List<...>', () {
+  test('Sould return an Stream<List<...>', () async {
 
-    when(provider.fetchAllDevices())
+    when(btProvider.fetchAllDevices())
         .thenAnswer((_) => mockFlutterBlueProvider.getDeviceList());
 
-    final result = useCases.fetchDevices();
+    final result = await useCases.fetchDevices();
 
     result.fold(
             (failure) => throw AssertionError(),
@@ -40,7 +45,7 @@ void main() {
   });
 
   test('Sould return isConected Stream<bol>', () {
-    when(provider.isScanning())
+    when(btProvider.isScanning())
         .thenAnswer((_) async* {yield true;});
     
     final result = useCases.isScanning();
@@ -51,7 +56,7 @@ void main() {
   });
 
   test('Sould return isConected = true', () {
-    when(provider.isScanning())
+    when(btProvider.isScanning())
         .thenAnswer((_) async* {yield true;});
     
     final result = useCases.isScanning();
@@ -62,7 +67,7 @@ void main() {
   });
 
   test('Sould return isConected = false', () {
-    when(provider.isScanning())
+    when(btProvider.isScanning())
         .thenAnswer((_) async* {yield false;});
     
     final result = useCases.isScanning();
@@ -72,12 +77,12 @@ void main() {
       (isScanning) => expect(isScanning, emits(false)));
   });
 
-  test('Sould return an Failure', () {
+  test('Sould return an Failure', () async {
 
-    when(provider.fetchAllDevices())
+    when(btProvider.fetchAllDevices())
         .thenThrow(SeveralFailure());
 
-    final result = useCases.fetchDevices();
+    final result = await useCases.fetchDevices();
 
     result.fold(
             (failure) => expect(failure, isA<Failure>()),
