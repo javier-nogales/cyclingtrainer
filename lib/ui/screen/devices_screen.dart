@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trainerapp/bloc/device/device_bloc.dart';
 import 'package:trainerapp/bloc/device_linking/device_linking_bloc.dart';
 import 'package:trainerapp/bloc/device_state/device_state_bloc.dart';
+import 'package:trainerapp/trainer_app.dart';
 import 'package:trainerapp/ui/widgets/bluetooth_scan.dart';
 import 'package:trainerapp/ui/widgets/devices.dart';
 
@@ -10,8 +11,14 @@ import '../../injection_container.dart';
 
 class DevicesScreen extends StatelessWidget {
 
+  DevicesScreen() {
+    print('************************************ DEVICE SCREEN CONSTRUCTOR');
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    print('************************************ DEVICE SCREEN BUILD');
 
     final deviceLinkingBloc = sl<DeviceLinkingBloc>();
 
@@ -28,6 +35,13 @@ class DevicesScreen extends StatelessWidget {
           slivers: <Widget>[
             SliverAppBar(
               title: Text('Bluetooth Devices'),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back), 
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, homeRoute);
+                }
+              )
+            
               // backgroundColor: Colors.green,
               // expandedHeight: 200.0,
               // flexibleSpace: FlexibleSpaceBar(

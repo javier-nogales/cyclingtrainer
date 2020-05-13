@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:trainerapp/ui/test_page.dart';
 
 class HomePage extends StatelessWidget {
+
+
+  HomePage() {
+    print('HOME PAGE CONSTRUCTOR');
+  }
+
   @override
   Widget build(BuildContext context) {
-
 
     return Scaffold(
       body: Center(

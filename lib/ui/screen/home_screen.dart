@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:trainerapp/trainer_app.dart';
 import 'package:trainerapp/ui/widgets/dashboard_button.dart';
 import 'package:trainerapp/ui/widgets/devices_board.dart';
 
 import 'devices_screen.dart';
 
 class HomeScreen extends StatelessWidget {
+
+  HomeSreen() {
+    print('************************************ HOME SCREEN CONSTRUCTOR');
+  }
   
   @override
   Widget build(BuildContext context) {
+
+    print('************************************ HOME SCREEN BUILD');
     
     return Scaffold(
 
@@ -26,10 +33,11 @@ class HomeScreen extends StatelessWidget {
                 board: Text('*** DEVICES ***'), //DevicesStatusBoard(),
               ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DevicesScreen()),
-                );  
+                Navigator.pushReplacementNamed(context, devicesRoute);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => DevicesScreen()),
+                // );  
               },
             )
           ),
