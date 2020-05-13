@@ -108,17 +108,6 @@ class DeviceInfoDialog extends StatelessWidget {
         deviceBloc: deviceBloc,
       ),
     );
-    // return MultiBlocProvider(
-    //   providers: [
-    //     BlocProvider<DeviceBloc>(create: (BuildContext context) => deviceBloc),
-    //     //BlocProvider<DeviceLinkingBloc>(create: (BuildContext context) => deviceLinkingBloc),
-    //   ],
-    //   child: CustomDialog(
-    //     title: Text('Device Info'),
-    //     content: _DeviceInfoContent(deviceLinkingBloc: deviceLinkingBloc,),
-    //     actions: _DeviceInfoActions(deviceLinkingBloc: deviceLinkingBloc),
-    //   ),
-    // );
   }
 }
 
