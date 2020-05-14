@@ -28,16 +28,16 @@ class Devices extends StatelessWidget {
     return Container(
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<TrainerDeviceStateBloc>(
+          BlocProvider<SynchronizedTrainerDeviceStateBloc>(
             create: (BuildContext context) {
-              BlocProvider.of<TrainerDeviceStateBloc>(context).init();
-              return BlocProvider.of<TrainerDeviceStateBloc>(context);
+              BlocProvider.of<SynchronizedTrainerDeviceStateBloc>(context).init();
+              return BlocProvider.of<SynchronizedTrainerDeviceStateBloc>(context);
             }
           ),
-          BlocProvider<HeartRateDeviceStateBloc>(
+          BlocProvider<SynchronizedHeartRateDeviceStateBloc>(
             create: (BuildContext context) {
-              BlocProvider.of<HeartRateDeviceStateBloc>(context).init();
-              return BlocProvider.of<HeartRateDeviceStateBloc>(context);
+              BlocProvider.of<SynchronizedHeartRateDeviceStateBloc>(context).init();
+              return BlocProvider.of<SynchronizedHeartRateDeviceStateBloc>(context);
             }
           )
         ],
@@ -46,7 +46,7 @@ class Devices extends StatelessWidget {
           children: <Widget>[
             Spacer(),
             RawMaterialButton(
-              child: DeviceStatusIcon<TrainerDeviceStateBloc>(icon: Icons.directions_bike),
+              child: DeviceStatusIcon<SynchronizedTrainerDeviceStateBloc>(icon: Icons.directions_bike),
               onPressed: () {
                 DeviceBlocState trainerState = trainerDeviceBloc.state;
                 if (trainerState is DeviceUpdateSuccess && trainerState.device != null)
@@ -61,7 +61,7 @@ class Devices extends StatelessWidget {
             ),
             Spacer(),
             RawMaterialButton(
-              child: DeviceStatusIcon<HeartRateDeviceStateBloc>(icon: FontAwesomeIcons.heartbeat),
+              child: DeviceStatusIcon<SynchronizedHeartRateDeviceStateBloc>(icon: FontAwesomeIcons.heartbeat),
               onPressed: () {
                 DeviceBlocState hrState = heartRateDeviceBloc.state;
                 if (hrState is DeviceUpdateSuccess && hrState.device != null)

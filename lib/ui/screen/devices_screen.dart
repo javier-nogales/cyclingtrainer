@@ -11,9 +11,7 @@ import '../../injection_container.dart';
 
 class DevicesScreen extends StatelessWidget {
 
-  DevicesScreen() {
-    print('************************************ DEVICE SCREEN CONSTRUCTOR');
-  }
+  bool _hasChanges = false;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +20,16 @@ class DevicesScreen extends StatelessWidget {
 
     final deviceLinkingBloc = sl<DeviceLinkingBloc>();
 
+    deviceLinkingBloc.listen((state) {
+      if (state is DeviceLinkSuccess || state is DeviceUnlinkSuccess) 
+        _hasChanges = true;
+    });
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => deviceLinkingBloc),
-        BlocProvider(create: (context) => sl<TrainerDeviceStateBloc>(param1: deviceLinkingBloc)),
-        BlocProvider(create: (context) => sl<HeartRateDeviceStateBloc>(param1: deviceLinkingBloc)),
+        BlocProvider(create: (context) => sl<SynchronizedTrainerDeviceStateBloc>(param1: deviceLinkingBloc)),
+        BlocProvider(create: (context) => sl<SynchronizedHeartRateDeviceStateBloc>(param1: deviceLinkingBloc)),
         BlocProvider(create: (context) => sl<TrainerDeviceBloc>(param1: deviceLinkingBloc)),
         BlocProvider(create: (context) => sl<HeartRateDeviceBloc>(param1: deviceLinkingBloc)),
       ],
@@ -38,7 +41,7 @@ class DevicesScreen extends StatelessWidget {
               leading: IconButton(
                 icon: Icon(Icons.arrow_back), 
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, homeRoute);
+                  Navigator.of(context).pop(_hasChanges);
                 }
               )
             

@@ -10,6 +10,9 @@ import 'device_status_icon.dart';
 
 class DevicesStatusBoard extends StatelessWidget {
 
+  final trainerDeviceStateBloc = sl<TrainerDeviceStateBloc>();
+  final heartRateDeviceStateBloc = sl<HeartRateDeviceStateBloc>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,14 +21,14 @@ class DevicesStatusBoard extends StatelessWidget {
         providers: [
           BlocProvider<TrainerDeviceStateBloc>(
             create: (BuildContext context) {
-              TrainerDeviceStateBloc bloc = sl<TrainerDeviceStateBloc>();
+              TrainerDeviceStateBloc bloc = trainerDeviceStateBloc;
               bloc.init();
               return bloc;
             }
           ),
           BlocProvider<HeartRateDeviceStateBloc>(
             create: (BuildContext context) {
-              HeartRateDeviceStateBloc bloc = sl<HeartRateDeviceStateBloc>();
+              HeartRateDeviceStateBloc bloc = heartRateDeviceStateBloc;
               bloc.init();
               return bloc;
             }
@@ -41,6 +44,11 @@ class DevicesStatusBoard extends StatelessWidget {
       ),
     );
 
+  }
+
+  void refresh() {
+    trainerDeviceStateBloc.refresh();
+    heartRateDeviceStateBloc.refresh();
   }
 
 }

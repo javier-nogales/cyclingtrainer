@@ -11,16 +11,30 @@ import 'package:trainerapp/bloc/device_state/device_state_state.dart';
 abstract class DeviceStateBloc<T extends DeviceUseCases> extends Bloc<DeviceStateEvent, DeviceStateState> {
 
   final T _useCases;
-  final DeviceLinkingBloc _linkingBloc;
+  DeviceLinkingBloc _linkingBloc;
   StreamSubscription _stateSubscription;
   StreamSubscription _linkingBlocSubscription;
   
-  DeviceStateBloc(this._useCases, this._linkingBloc) {
+  // DeviceStateBloc(this._useCases, this._linkingBloc) {
+  //   if (_linkingBlocSubscription != null) {
+  //     _linkingBlocSubscription = _linkingBloc.listen((state) {
+  //       if (state is DeviceUnlinkSuccess) {
+  //         _refresh();
+  //       } else if (state is DeviceLinkSuccess) {
+  //         _refresh();
+  //       } 
+  //     });
+  //   }
+  // }
+
+  DeviceStateBloc(this._useCases);
+
+  DeviceStateBloc.synchronized(this._useCases, this._linkingBloc) {
     _linkingBlocSubscription = _linkingBloc.listen((state) {
       if (state is DeviceUnlinkSuccess) {
-        _refresh();
+        refresh();
       } else if (state is DeviceLinkSuccess) {
-        _refresh();
+        refresh();
       } 
     });
   }
@@ -46,7 +60,7 @@ abstract class DeviceStateBloc<T extends DeviceUseCases> extends Bloc<DeviceStat
     );
   }
 
-  Future<void> _refresh() async {
+  Future<void> refresh() async {
     if (_stateSubscription != null) {
       _stateSubscription.cancel();
       _stateSubscription = null;
@@ -81,19 +95,32 @@ abstract class DeviceStateBloc<T extends DeviceUseCases> extends Bloc<DeviceStat
   }
 }
 
-class HeartRateDeviceStateBloc 
+class SynchronizedHeartRateDeviceStateBloc 
     extends DeviceStateBloc<HeartRateDeviceUseCases> {
-  HeartRateDeviceStateBloc({
+
+  SynchronizedHeartRateDeviceStateBloc({
     @required HeartRateDeviceUseCases useCases,
     @required DeviceLinkingBloc linkingBloc,
-    }) : super(useCases, linkingBloc);
+  }) : super.synchronized(useCases, linkingBloc);
+}
+
+class HeartRateDeviceStateBloc 
+    extends DeviceStateBloc<HeartRateDeviceUseCases> {
+  
+  HeartRateDeviceStateBloc({ @required HeartRateDeviceUseCases useCases}) : super(useCases);
+}
+
+class SynchronizedTrainerDeviceStateBloc
+    extends DeviceStateBloc<TrainerDeviceUseCases> {
+  
+  SynchronizedTrainerDeviceStateBloc({
+    @required TrainerDeviceUseCases useCases,
+    @required DeviceLinkingBloc linkingBloc,
+  }) : super.synchronized(useCases, linkingBloc);
 }
 
 class TrainerDeviceStateBloc
     extends DeviceStateBloc<TrainerDeviceUseCases> {
-  TrainerDeviceStateBloc({
-    @required TrainerDeviceUseCases useCases,
-    @required DeviceLinkingBloc linkingBloc,
-    }) : super(useCases, linkingBloc);
-
+  
+  TrainerDeviceStateBloc({@required TrainerDeviceUseCases useCases}) : super(useCases);
 }

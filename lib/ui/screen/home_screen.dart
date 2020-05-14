@@ -7,9 +7,7 @@ import 'devices_screen.dart';
 
 class HomeScreen extends StatelessWidget {
 
-  HomeSreen() {
-    print('************************************ HOME SCREEN CONSTRUCTOR');
-  }
+  final devicesStatusBoard = DevicesStatusBoard();
   
   @override
   Widget build(BuildContext context) {
@@ -30,10 +28,19 @@ class HomeScreen extends StatelessWidget {
               child: DashboardButton(
                 title: DashboardButtonTitle(text: 'Bluetooth Devices',),
                 separator: DashboardButtonSeparator(),
-                board: Text('*** DEVICES ***'), //DevicesStatusBoard(),
+                board: devicesStatusBoard,
               ),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, devicesRoute);
+              onPressed: () async {
+                // Navigator.pushReplacementNamed(context, devicesRoute);
+                Object hasChanges = await Navigator.pushNamed(context, devicesRoute);
+                if (hasChanges) {
+                  print('Return from Devices screen with changes');
+                  devicesStatusBoard.refresh();
+                } else {
+                  print('Return from Devices screen without changes');
+                }
+                
+                
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(builder: (context) => DevicesScreen()),

@@ -47,15 +47,27 @@ void init() {
   //   )
   // );
 
-  sl.registerFactoryParam<TrainerDeviceStateBloc, DeviceLinkingBloc, void>(
-    (linkingBloc1, _) => TrainerDeviceStateBloc(
+  sl.registerFactory<TrainerDeviceStateBloc>(
+    () => TrainerDeviceStateBloc(
+      useCases: sl()
+    )
+  );
+
+  sl.registerFactoryParam<SynchronizedTrainerDeviceStateBloc, DeviceLinkingBloc, void>(
+    (linkingBloc1, _) => SynchronizedTrainerDeviceStateBloc(
       useCases: sl(),
       linkingBloc: linkingBloc1
     )
   );
 
-  sl.registerFactoryParam<HeartRateDeviceStateBloc, DeviceLinkingBloc, void>(
-    (linkingBloc, _) => HeartRateDeviceStateBloc(
+  sl.registerFactory<HeartRateDeviceStateBloc>(
+    () => HeartRateDeviceStateBloc(
+      useCases: sl()
+    )
+  );
+
+  sl.registerFactoryParam<SynchronizedHeartRateDeviceStateBloc, DeviceLinkingBloc, void>(
+    (linkingBloc, _) => SynchronizedHeartRateDeviceStateBloc(
       useCases: sl(),
       linkingBloc: linkingBloc,
     )
