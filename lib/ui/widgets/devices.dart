@@ -46,7 +46,7 @@ class Devices extends StatelessWidget {
           children: <Widget>[
             Spacer(),
             RawMaterialButton(
-              child: DeviceStatusIcon<SynchronizedTrainerDeviceStateBloc>(icon: Icons.directions_bike),
+              child: DeviceStatusIcon_OLD<SynchronizedTrainerDeviceStateBloc>(icon: Icons.directions_bike),
               onPressed: () {
                 DeviceBlocState trainerState = trainerDeviceBloc.state;
                 if (trainerState is DeviceUpdateSuccess && trainerState.device != null)
@@ -61,7 +61,7 @@ class Devices extends StatelessWidget {
             ),
             Spacer(),
             RawMaterialButton(
-              child: DeviceStatusIcon<SynchronizedHeartRateDeviceStateBloc>(icon: FontAwesomeIcons.heartbeat),
+              child: DeviceStatusIcon_OLD<SynchronizedHeartRateDeviceStateBloc>(icon: FontAwesomeIcons.heartbeat),
               onPressed: () {
                 DeviceBlocState hrState = heartRateDeviceBloc.state;
                 if (hrState is DeviceUpdateSuccess && hrState.device != null)

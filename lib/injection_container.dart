@@ -119,7 +119,6 @@ void init() {
   sl.registerLazySingleton<TrainerDeviceRepository>(
     () => TrainerDeviceRepository(
       sl(),
-      sl(),
       TrainerDeviceFactory()
     )
   );
@@ -134,7 +133,6 @@ void init() {
 
   sl.registerLazySingleton<HeartRateDeviceRepository>(
     () => HeartRateDeviceRepository(
-      sl(),
       sl(),
       HeartRateDeviceFactory()
     )

@@ -5,11 +5,11 @@ import 'package:trainerapp/api/device/device_package.dart';
 import 'package:trainerapp/bloc/device_state/bloc.dart';
 
 
-class DeviceStatusIcon<B extends DeviceStateBloc> extends StatelessWidget {
+class DeviceStatusIcon_OLD<B extends DeviceStateBloc> extends StatelessWidget {
 
   final IconData icon;
 
-  const DeviceStatusIcon({@required this.icon});
+  const DeviceStatusIcon_OLD({@required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class DeviceStatusIcon<B extends DeviceStateBloc> extends StatelessWidget {
         return Container(
           width: 60,
           height: 60,
-          margin: EdgeInsets.symmetric(horizontal: 20),
+          // margin: EdgeInsets.symmetric(horizontal: 3),
           decoration: BoxDecoration(
             color: color1,
             borderRadius: BorderRadius.circular(5),
@@ -41,10 +41,10 @@ class DeviceStatusIcon<B extends DeviceStateBloc> extends StatelessWidget {
               Positioned(
                 top: 3,
                 left: 3,
-                child: FaIcon(
+                child: Icon(
                   FontAwesomeIcons.ban,
                   color: Colors.red[300],
-                  size: 15,
+                  size: 10,
                 ),
               ),
               Center(

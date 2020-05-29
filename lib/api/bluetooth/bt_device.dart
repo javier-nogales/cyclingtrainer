@@ -8,6 +8,13 @@ abstract class BTDevice {
   DeviceID get btId;
   String get btName;
   Stream<BTDeviceState> get btState;
+  
+  Future<void> connect();
+
+  void ensureConnection({
+    @required Function onConnect,
+    @required Function onConnectionLost,
+  });
 
   @override
   String toString() {

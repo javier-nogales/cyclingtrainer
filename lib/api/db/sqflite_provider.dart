@@ -42,4 +42,9 @@ class SQFLiteProvider implements DBProvider {
     return _crudService.getDeviceByType(DeviceType.trainer);
   }
 
+  @override
+  Future<DBDevice> getDeviceByType(DeviceType type) {
+    return _crudService.getDeviceByType(type);
+  }
+
 }

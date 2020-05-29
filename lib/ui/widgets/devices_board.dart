@@ -16,7 +16,7 @@ class DevicesStatusBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(5),
       child: MultiBlocProvider(
         providers: [
           BlocProvider<TrainerDeviceStateBloc>(
@@ -35,10 +35,12 @@ class DevicesStatusBoard extends StatelessWidget {
           )
         ],
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            DeviceStatusIcon<TrainerDeviceStateBloc>(icon: Icons.directions_bike),
-            DeviceStatusIcon<HeartRateDeviceStateBloc>(icon: FontAwesomeIcons.heartbeat),
+            DeviceStatusIcon_OLD<TrainerDeviceStateBloc>(icon: Icons.directions_bike),
+            DeviceStatusIcon_OLD<HeartRateDeviceStateBloc>(icon: FontAwesomeIcons.heartbeat),
+            DeviceStatusIcon_OLD<TrainerDeviceStateBloc>(icon: Icons.directions_bike),
+            DeviceStatusIcon_OLD<HeartRateDeviceStateBloc>(icon: FontAwesomeIcons.heartbeat),
           ],
         ),
       ),

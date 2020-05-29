@@ -3,46 +3,118 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:rxdart/rxdart.dart';
+import 'package:trainerapp/api/bluetooth/bluetooth_provider.dart';
 
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
+import 'package:trainerapp/api/bluetooth/bt_device_controller.dart';
 
+import '../../injection_container.dart';
 import 'identifiers.dart';
 
-/// ----------------------------------------------------------------------------
-///
-/// ----------------------------------------------------------------------------
 abstract class Device {
-
+  
   final DeviceID _id;
   final String _name;
   final DeviceType _type;
-  final _state = BehaviorSubject<DeviceState>();
+  // final _state = BehaviorSubject<DeviceState>()..startWith(DeviceState.notFound);
+  //BTDevice _btDevice;
+  final BTDeviceController _btDeviceController = BTDeviceController(sl<BluetoothProvider>());
 
-  BTDevice _btDevice;
+  Device(this._id, this._name, this._type);
 
-  Device(this._id, this._name, this._type) {
-    // at this time device is null
-    _state.add(DeviceState.notFound);
-  }
+  Future<void> initBluetooth() async => await _btDeviceController.load(_id);
+
 
   DeviceID get id => _id;
   String get name => _name;
   DeviceType get type => _type;
-  Stream<DeviceState> get state => _state.stream;
+  //Stream<DeviceState> get state => _state.stream;
 
-  set btDevice(BTDevice device) {
-    _btDevice = device;
-    if (device == null) {
-      _state.add(DeviceState.notFound);
-    } else {
-      _btDevice.btState.listen((btDeviceState) {
-        _state.add(_transformBTStateToDeviceState(btDeviceState));
-      });
-    }
-  }
-  BTDevice get btDevice => this._btDevice;
+  //BTDevice get btDevice => _btDeviceController.btDevice;
 
-  DeviceState _transformBTStateToDeviceState(BTDeviceState btDeviceState) {
+  Stream<DeviceState> get state => _btDeviceController.btState.map((btState) => _mapBTStateToDeviceState(btState));
+
+
+  // set btDevice(BTDevice btDevice) {
+  //   _btDevice = btDevice;
+  //   if (_btDevice != null) {
+  //     // _btDevice.ensureConnection(
+  //     //   onConnect: () {
+  //     //     print('[DEBUG] [${DateTime.now()}] [${this.runtimeType}] ** Device is connected');
+  //     //   },
+  //     //   onConnectionLost: () {
+  //     //     print('[DEBUG] [${DateTime.now()}] [${this.runtimeType}] ** Device Connection lost');
+  //     //   }
+  //     // );
+  //   } else {
+  //     // _startDeviceSearch(
+  //     //   onFound: () {
+
+  //     //   }
+  //     // );
+  //   }
+  // }
+
+  // void _checkConnection(BTDeviceState btDeviceState) {
+  //   final newState = _transformBTStateToDeviceState(btDeviceState);
+  //   if (_isConnectionLost(newState)) {
+  //     _reconnect();
+  //   }
+  //   _state.add(newState);
+  // }
+
+  // void _startDeviceSearch({@required Function onFound}) {
+  //   Timer.periodic(
+  //     Duration(seconds: 5), 
+  //     (timer) {
+
+        // _btDevice.connect()
+        //           .then((_) {
+        //             print('[DEBUG] [${DateTime.now()}] [${this.runtimeType}] Device continue connected');
+        //           })
+        //           .timeout(
+        //             Duration(milliseconds: 2000), 
+        //             onTimeout: () {
+        //               print('[DEBUG] [${DateTime.now()}] [${this.runtimeType}] Device connection timeout');
+        //               _state.add(DeviceState.notFound);
+        //               timer.cancel();
+        //             }
+        //           )
+        //           .catchError((err) {
+        //             print('[DEBUG] [${DateTime.now()}] [${this.runtimeType}]Error connecting device');
+        //               _state.add(DeviceState.notFound);
+        //               timer.cancel();
+        //           });
+  //     }
+  //   );
+  // }
+
+  // bool _isConnectionLost(DeviceState newState) {
+  //   if (
+  //     _state.value == DeviceState.connected 
+  //     && newState == DeviceState.disconnected
+  //   )
+  //     return true;
+  //   else
+  //     return false;
+  // }
+
+  // void _reconnect() {
+  //   print('[DEBUG] [${DateTime.now()}] [${this.runtimeType}] Device has been disconnected, reconnecting...');
+  //   _btDevice.connect()
+  //     .timeout(
+  //       Duration(milliseconds: 2000), 
+  //       onTimeout: () {
+  //         print('[DEBUG] [${DateTime.now()}] [${this.runtimeType}] Device connection lost');
+  //         _state.add(DeviceState.notFound);
+  //       }
+  //     )
+  //     .catchError((err) {
+  //       print('[DEBUG] [${DateTime.now()}] [${this.runtimeType}]Error reconnecting device');
+  //     });
+  // }
+
+  DeviceState _mapBTStateToDeviceState(BTDeviceState btDeviceState) {
     DeviceState outState;
     switch (btDeviceState) {
       case BTDeviceState.disconnected:
@@ -70,19 +142,12 @@ abstract class Device {
 
 }
 
-/// ----------------------------------------------------------------------------
-///
-/// ----------------------------------------------------------------------------
 abstract class TrainerDevice extends Device {
-
   TrainerDevice(DeviceID id, String name, DeviceType type)
       : super(id, name, type);
 
 }
 
-/// ----------------------------------------------------------------------------
-///
-/// ----------------------------------------------------------------------------
 abstract class HeartRateDevice extends Device{
 
   HeartRateDevice(DeviceID id, String name, DeviceType type)
@@ -90,27 +155,33 @@ abstract class HeartRateDevice extends Device{
 
 }
 
+abstract class CadenceDevice extends Device{
 
+  CadenceDevice(DeviceID id, String name, DeviceType type)
+      : super(id, name, type);
 
-/// ----------------------------------------------------------------------------
-///
-/// ----------------------------------------------------------------------------
+}
+
+abstract class SpeedDevice extends Device{
+
+  SpeedDevice(DeviceID id, String name, DeviceType type)
+      : super(id, name, type);
+
+}
+
 enum DeviceType {
   cadence,
   heartRate,
+  speed,
   trainer,
 }
-/// ----------------------------------------------------------------------------
-///
-/// ----------------------------------------------------------------------------
+
 enum DeviceState {
   connected,
   disconnected,
   notFound,
 }
-/// ----------------------------------------------------------------------------
-///
-/// ----------------------------------------------------------------------------
+
 enum DeviceClass {
   bkoolTrainer,
   standardHeartRate,
