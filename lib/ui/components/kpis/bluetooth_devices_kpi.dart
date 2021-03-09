@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/bloc/device_state/bloc.dart';
 import 'package:trainerapp/ui/components/device_status_icon.dart';
 

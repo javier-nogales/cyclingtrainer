@@ -3,7 +3,7 @@ import 'package:mockito/mockito.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
 import 'package:trainerapp/api/db/db_device.dart';
 import 'package:trainerapp/api/db/db_device_factory.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/api/use_cases/bt_device_check_controller.dart';
 import 'package:trainerapp/api/use_cases/bt_device_check_use_cases.dart';
 import 'package:trainerapp/core/error/several_failure.dart';

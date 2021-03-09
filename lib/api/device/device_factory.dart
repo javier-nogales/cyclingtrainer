@@ -1,7 +1,7 @@
 
 import 'package:trainerapp/api/db/db_device.dart';
 import 'package:trainerapp/api/device/bkool_trainer_device.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/api/device/standard_heart_rate_device.dart';
 
 abstract class DeviceFactory<T extends Device> {

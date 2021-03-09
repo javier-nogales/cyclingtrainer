@@ -1,6 +1,6 @@
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/bloc/device_state/device_state_event.dart';
 
 void main() {

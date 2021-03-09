@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/api/use_cases/device_use_cases.dart';
 import 'package:trainerapp/api/use_cases/heart_rate_device_use_cases.dart';
 import 'package:trainerapp/api/use_cases/trainer_device_use_cases.dart';

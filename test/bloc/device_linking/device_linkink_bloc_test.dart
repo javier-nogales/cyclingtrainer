@@ -5,7 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trainerapp/api/db/db_device.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/api/use_cases/linking_use_case.dart';
 import 'package:trainerapp/bloc/device_linking/device_linking_bloc.dart';
 import 'package:trainerapp/core/error/several_failure.dart';

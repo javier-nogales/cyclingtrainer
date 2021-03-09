@@ -3,7 +3,7 @@ import 'package:trainerapp/api/device/device_repository.dart';
 import 'package:trainerapp/core/error/failures.dart';
 import 'package:trainerapp/core/error/several_failure.dart';
 import 'package:trainerapp/api/db/db_device.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/api/db/db_provider.dart';
 import 'package:trainerapp/api/use_cases/linking_use_case.dart';
 

@@ -14,7 +14,7 @@ import 'api/bluetooth/bluetooth_provider.dart';
 import 'api/bluetooth/flutter_blue_provider.dart';
 import 'api/db/db_device_factory.dart';
 import 'api/db/db_provider.dart';
-import 'api/device/device_package.dart';
+import 'api/device/device.dart';
 import 'api/device/device_repository.dart';
 import 'api/use_cases/bluetooth_use_cases.dart';
 import 'api/use_cases/bt_device_check_use_cases.dart';
@@ -32,20 +32,6 @@ final sl = GetIt.instance;
 void init() {
 
   // Factory
-
-  // sl.registerFactory(
-  //   () => TrainerDeviceStateBloc(
-  //     useCases: sl(),
-  //     linkingBloc: sl(),
-  //   )
-  // );
-
-  // sl.registerFactory(
-  //   () => HeartRateDeviceStateBloc(
-  //     useCases: sl(),
-  //     linkingBloc: sl(),
-  //   )
-  // );
 
   sl.registerFactory<TrainerDeviceStateBloc>(
     () => TrainerDeviceStateBloc(
@@ -111,9 +97,6 @@ void init() {
     )
   );
 
-  // sl.registerLazySingleton<DeviceLinkingBloc>(
-  //   () => DeviceLinkingBloc(useCases: sl())
-  // );
 
   // Lazy Singleton
   sl.registerLazySingleton<TrainerDeviceRepository>(
@@ -123,13 +106,6 @@ void init() {
     )
   );
 
-  // sl.registerLazySingleton<DeviceRepository<TrainerDevice>>(
-  //   () => TrainerDeviceRepository(
-  //     sl(),
-  //     sl(),
-  //     TrainerDeviceFactory()
-  //   )
-  // );
 
   sl.registerLazySingleton<HeartRateDeviceRepository>(
     () => HeartRateDeviceRepository(
@@ -138,25 +114,16 @@ void init() {
     )
   );
 
-  // sl.registerLazySingleton<DeviceRepository<HeartRateDevice>>(
-  //   () => HeartRateDeviceRepository(
-  //     sl(),
-  //     sl(),
-  //     HeartRateDeviceFactory()
-  //   )
-  // );
 
   sl.registerLazySingleton<TrainerDeviceUseCases>(
     () => TrainerDeviceController(
       sl()
-      // TrainerDeviceRepository(sl(), sl(), TrainerDeviceFactory())
     )
   );
 
   sl.registerLazySingleton<HeartRateDeviceUseCases>(
     () => HeartRateDeviceController(
       sl()
-      // HeartRateDeviceRepository(sl(), sl(), HeartRateDeviceFactory())
     )
   );
 
@@ -165,8 +132,6 @@ void init() {
       sl(), 
       sl(),
       sl(),
-      // HeartRateDeviceRepository(sl(), sl(), HeartRateDeviceFactory()), 
-      // TrainerDeviceRepository(sl(), sl(), TrainerDeviceFactory())
     )
   );
   

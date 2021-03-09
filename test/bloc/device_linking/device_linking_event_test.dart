@@ -2,7 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trainerapp/api/db/db_device.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/bloc/device_linking/device_linking_bloc.dart';
 
 import '../../api/device/mock_device.dart';

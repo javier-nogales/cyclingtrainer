@@ -1,7 +1,7 @@
 
 
 import 'identifiers.dart';
-import 'device_package.dart';
+import 'device.dart';
 
 class StandardHeartRateDevice extends HeartRateDevice {
 
