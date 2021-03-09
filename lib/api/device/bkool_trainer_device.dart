@@ -2,7 +2,7 @@
 
 import 'package:trainerapp/api/device/identifiers.dart';
 
-import 'device_package.dart';
+import 'device.dart';
 
 class BkoolTrainerDevice extends TrainerDevice {
 

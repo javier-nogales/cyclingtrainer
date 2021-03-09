@@ -1,6 +1,6 @@
 import 'package:trainerapp/api/db/db_device.dart';
 import 'package:trainerapp/api/db/sqflite_crud.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/api/device/identifiers.dart';
 import 'package:trainerapp/api/db/db_provider.dart';
 import 'package:trainerapp/core/error/exceptions.dart';

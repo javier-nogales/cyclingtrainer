@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/bloc/device_state/bloc.dart';
 import 'package:trainerapp/ui/theme/color_theme.dart';
 import 'package:trainerapp/ui/theme/icon_theme.dart';

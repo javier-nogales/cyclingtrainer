@@ -4,7 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:trainerapp/api/bluetooth/bt_device.dart';
-import 'package:trainerapp/api/device/device_package.dart';
+import 'package:trainerapp/api/device/device.dart';
 import 'package:trainerapp/api/use_cases/trainer_device_use_cases.dart';
 import 'package:trainerapp/bloc/device_linking/device_linking_bloc.dart';
 import 'package:trainerapp/bloc/device_state/bloc.dart';
