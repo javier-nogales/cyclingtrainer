@@ -16,6 +16,7 @@ abstract class MockDevice<T extends Device> {
   MockDevice() {
     mockBTDevice = MockBlueDevice();
     btDevice = mockBTDevice;
+
   }
 
   Future<T> getDevice() async => device;
@@ -39,7 +40,7 @@ class MockTrainerDevice extends MockDevice<TrainerDevice>{
   MockTrainerDevice() {
     DBDevice dbDevice = DBDevice("fakeID", "fakeName", DeviceType.trainer, DeviceClass.bkoolTrainer);
     device = TrainerDeviceFactory().from(dbDevice);
-    device.btDevice = btDevice;
+    // device.btDevice = btDevice;
   }
 
 }
@@ -49,7 +50,7 @@ class MockHeartRateDevice extends MockDevice<HeartRateDevice>{
   MockHeartRateDevice() {
     DBDevice dbDevice = DBDevice("fakeID", "fakeName", DeviceType.heartRate, DeviceClass.standardHeartRate);
     device = HeartRateDeviceFactory().from(dbDevice);
-    device.btDevice = btDevice;
+    // device.btDevice = btDevice;
   }
 
 }
