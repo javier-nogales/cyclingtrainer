@@ -11,6 +11,7 @@ import 'package:trainerapp/api/use_cases/trainer_device_controller.dart';
 import 'package:trainerapp/bloc/bt_device_check/bt_device_check_bloc.dart';
 
 import 'api/bluetooth/bluetooth_provider.dart';
+import 'api/bluetooth/bt_device_controller.dart';
 import 'api/bluetooth/flutter_blue_provider.dart';
 import 'api/db/db_device_factory.dart';
 import 'api/db/db_provider.dart';
@@ -98,11 +99,14 @@ void init() {
   );
 
 
+  sl.registerFactory(
+    () => BTDeviceController(sl<BluetoothProvider>()));
+
   // Lazy Singleton
   sl.registerLazySingleton<TrainerDeviceRepository>(
     () => TrainerDeviceRepository(
       sl(),
-      TrainerDeviceFactory()
+      TrainerDeviceFactory(BTDeviceController(sl<BluetoothProvider>()))
     )
   );
 
@@ -110,7 +114,7 @@ void init() {
   sl.registerLazySingleton<HeartRateDeviceRepository>(
     () => HeartRateDeviceRepository(
       sl(),
-      HeartRateDeviceFactory()
+      HeartRateDeviceFactory(BTDeviceController(sl<BluetoothProvider>()))
     )
   );
 

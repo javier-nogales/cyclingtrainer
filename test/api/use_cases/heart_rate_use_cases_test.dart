@@ -16,6 +16,8 @@ import '../bluetooth/mock_blue_device.dart';
 
 class MockHeartRateDeviceRepository extends Mock
     implements HeartRateDeviceRepository {}
+class MockBTDeviceController extends Mock
+    implements BTDeviceController {}
 
 void main() {
 

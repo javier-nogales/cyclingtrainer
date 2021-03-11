@@ -45,4 +45,10 @@ class MockSQFLiteProvider implements DBProvider {
     // TODO: implement getAllDevices
     return null;
   }
+
+  @override
+  Future<DBDevice> getDeviceByType(DeviceType type) {
+    // TODO: implement getDeviceByType
+    return null;
+  }
 }

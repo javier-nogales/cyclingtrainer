@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 
-import '../device/device_package.dart';
+import '../device/device.dart';
 
 class DBDevice {
 

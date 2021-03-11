@@ -17,9 +17,9 @@ abstract class Device {
   final String _name;
   final DeviceType _type;
 
-  final BTDeviceController _btDeviceController = BTDeviceController(sl<BluetoothProvider>());
+  final BTDeviceController _btDeviceController; // BTDeviceController(sl<BluetoothProvider>());
 
-  Device(this._id, this._name, this._type);
+  Device(this._id, this._name, this._type, this._btDeviceController);
 
   Future<void> initBluetooth() async => await _btDeviceController.load(_id);
 
@@ -60,29 +60,29 @@ abstract class Device {
 }
 
 abstract class TrainerDevice extends Device {
-  TrainerDevice(DeviceID id, String name, DeviceType type)
-      : super(id, name, type);
+  TrainerDevice(DeviceID id, String name, DeviceType type, BTDeviceController btDeviceController)
+      : super(id, name, type, btDeviceController);
 
 }
 
 abstract class HeartRateDevice extends Device{
 
-  HeartRateDevice(DeviceID id, String name, DeviceType type)
-      : super(id, name, type);
+  HeartRateDevice(DeviceID id, String name, DeviceType type, BTDeviceController btDeviceController)
+      : super(id, name, type, btDeviceController);
 
 }
 
 abstract class CadenceDevice extends Device{
 
-  CadenceDevice(DeviceID id, String name, DeviceType type)
-      : super(id, name, type);
+  CadenceDevice(DeviceID id, String name, DeviceType type, BTDeviceController btDeviceController)
+      : super(id, name, type, btDeviceController);
 
 }
 
 abstract class SpeedDevice extends Device{
 
-  SpeedDevice(DeviceID id, String name, DeviceType type)
-      : super(id, name, type);
+  SpeedDevice(DeviceID id, String name, DeviceType type, BTDeviceController btDeviceController)
+      : super(id, name, type, btDeviceController);
 
 }
 
