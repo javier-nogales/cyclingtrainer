@@ -11,10 +11,10 @@ import 'package:trainerapp/api/use_cases/trainer_device_controller.dart';
 import 'package:trainerapp/bloc/bt_device_check/bt_device_check_bloc.dart';
 
 import 'api/bluetooth/bluetooth_provider.dart';
+import 'api/bluetooth/bt_device_controller.dart';
 import 'api/bluetooth/flutter_blue_provider.dart';
 import 'api/db/db_device_factory.dart';
 import 'api/db/db_provider.dart';
-import 'api/device/device.dart';
 import 'api/device/device_repository.dart';
 import 'api/use_cases/bluetooth_use_cases.dart';
 import 'api/use_cases/bt_device_check_use_cases.dart';
@@ -26,135 +26,302 @@ import 'bloc/bluetooth_scan/bluetooth_scan_bloc.dart';
 import 'bloc/device/device_bloc.dart';
 import 'bloc/device_linking/device_linking_bloc.dart';
 import 'bloc/device_state/device_state_bloc.dart';
+import 'core/utils/logger.dart';
 
 final sl = GetIt.instance;
 
 void init() {
 
   // Factory
-
+  // sl.registerFactory<TrainerDeviceStateBloc>(
+  //   ()   => TrainerDeviceStateBloc(
+  //     useCases: sl()
+  //   )
+  // );
+  // debug version
   sl.registerFactory<TrainerDeviceStateBloc>(
-    () => TrainerDeviceStateBloc(
-      useCases: sl()
-    )
+    () {
+      debug('[Injector] TrainerDeviceStateBloc');
+      return TrainerDeviceStateBloc(useCases: sl());
+    }
   );
 
+  // sl.registerFactoryParam<SynchronizedTrainerDeviceStateBloc, DeviceLinkingBloc, void>(
+  //   (linkingBloc, _) => SynchronizedTrainerDeviceStateBloc(
+  //     useCases: sl(),
+  //     linkingBloc: linkingBloc
+  //   )
+  // );
+  // debug version
   sl.registerFactoryParam<SynchronizedTrainerDeviceStateBloc, DeviceLinkingBloc, void>(
-    (linkingBloc1, _) => SynchronizedTrainerDeviceStateBloc(
-      useCases: sl(),
-      linkingBloc: linkingBloc1
-    )
+    (linkingBloc, _) {
+      debug('[Injector] SynchronizedTrainerDeviceStateBloc');
+      return SynchronizedTrainerDeviceStateBloc(
+          useCases: sl(),
+          linkingBloc: linkingBloc
+      );
+    }
   );
 
+  // sl.registerFactory<HeartRateDeviceStateBloc>(
+  //   () => HeartRateDeviceStateBloc(
+  //     useCases: sl()
+  //   )
+  // );
+  // debug version
   sl.registerFactory<HeartRateDeviceStateBloc>(
-    () => HeartRateDeviceStateBloc(
-      useCases: sl()
-    )
+    () {
+      debug('[Injector] HeartRateDeviceStateBloc');
+      return HeartRateDeviceStateBloc(useCases: sl());
+    }
   );
 
+  // sl.registerFactoryParam<SynchronizedHeartRateDeviceStateBloc, DeviceLinkingBloc, void>(
+  //   (linkingBloc, _) => SynchronizedHeartRateDeviceStateBloc(
+  //     useCases: sl(),
+  //     linkingBloc: linkingBloc,
+  //   )
+  // );
+  // debug version
   sl.registerFactoryParam<SynchronizedHeartRateDeviceStateBloc, DeviceLinkingBloc, void>(
-    (linkingBloc, _) => SynchronizedHeartRateDeviceStateBloc(
-      useCases: sl(),
-      linkingBloc: linkingBloc,
-    )
+    (linkingBloc, _) {
+      debug('[Injector] SynchronizedHeartRateDeviceStateBloc');
+      return SynchronizedHeartRateDeviceStateBloc(
+        useCases: sl(),
+        linkingBloc: linkingBloc,
+      );
+    }
   );
 
-  sl.registerFactoryParam<TrainerDeviceBloc, DeviceLinkingBloc, void>( 
-    (linkingBloc, _) => TrainerDeviceBloc(
-      useCases:sl(),
-      linkingBloc: linkingBloc,
-    ) 
+  // sl.registerFactoryParam<TrainerDeviceBloc, DeviceLinkingBloc, void>(
+  //   (linkingBloc, _) => TrainerDeviceBloc(
+  //     useCases:sl(),
+  //     linkingBloc: linkingBloc,
+  //   )
+  // );
+  // debug version
+  sl.registerFactoryParam<TrainerDeviceBloc, DeviceLinkingBloc, void>(
+    (linkingBloc, _) {
+      debug('[Injector] TrainerDeviceBloc');
+      return TrainerDeviceBloc(
+        useCases:sl(),
+        linkingBloc: linkingBloc,
+      );
+    }
   );
 
-  sl.registerFactoryParam<HeartRateDeviceBloc, DeviceLinkingBloc, void>( 
-    (linkingBloc, _) => HeartRateDeviceBloc(
-      useCases:sl(),
-      linkingBloc: linkingBloc,
-    ) 
+  // sl.registerFactoryParam<HeartRateDeviceBloc, DeviceLinkingBloc, void>(
+  //   (linkingBloc, _) => HeartRateDeviceBloc(
+  //     useCases:sl(),
+  //     linkingBloc: linkingBloc,
+  //   )
+  // );
+  // debug version
+  sl.registerFactoryParam<HeartRateDeviceBloc, DeviceLinkingBloc, void>(
+    (linkingBloc, _) {
+      debug('[Injector] HeartRateDeviceBloc');
+      return HeartRateDeviceBloc(
+        useCases:sl(),
+        linkingBloc: linkingBloc,
+      );
+    }
   );
 
+  // sl.registerFactory(
+  //   () => BluetoothScanBloc(
+  //     useCases: sl()
+  //   )
+  // );
+  // debug version
   sl.registerFactory(
-    () => BluetoothScanBloc(
-      useCases: sl()
-    )
+    () {
+      debug('[Injector] BluetoothScanBloc');
+      return BluetoothScanBloc(useCases: sl());
+    }
   );
 
+  // sl.registerFactory(
+  //   () => BluetoothIsScanningBloc(
+  //     useCases: sl()
+  //   )
+  // );
+  // debug version
   sl.registerFactory(
-    () => BluetoothIsScanningBloc(
-      useCases: sl()
-    )
+    () {
+      debug('[Injector] BluetoothIsScanningBloc');
+      return BluetoothIsScanningBloc(useCases: sl());
+    }
   );
 
+  // sl.registerFactory(
+  //   () => BTDeviceCheckBloc(
+  //     useCases: sl()
+  //   )
+  // );
+  // debug version
   sl.registerFactory(
-    () => BTDeviceCheckBloc(
-      useCases: sl()
-    )
+    () {
+      debug('[Injector] BTDeviceCheckBloc');
+      return BTDeviceCheckBloc(useCases: sl());
+    }
   );
 
+  // sl.registerFactory(
+  //   () => DeviceLinkingBloc(
+  //     useCases: sl()
+  //   )
+  // );
+  // debug version
   sl.registerFactory(
-    () => DeviceLinkingBloc(
-      useCases: sl()
-    )
+    () {
+      debug('[Injector] DeviceLinkingBloc');
+      return DeviceLinkingBloc(useCases: sl());
+    }
   );
 
+  // sl.registerFactory(
+  //         () => BTDeviceController(sl<BluetoothProvider>())
+  // );
+  sl.registerFactory(
+    () {
+      debug('[Injector] BTDeviceController');
+      return BTDeviceController(sl<BluetoothProvider>());
+    }
+  );
 
-  // Lazy Singleton
+  /*
+    Lazy Singleton
+   */
+  // sl.registerLazySingleton<TrainerDeviceRepository>(
+  //         () => TrainerDeviceRepository(
+  //         sl(),
+  //         TrainerDeviceFactory(BTDeviceController(sl<BluetoothProvider>()))
+  //     )
+  // );
+  // debug version
   sl.registerLazySingleton<TrainerDeviceRepository>(
-    () => TrainerDeviceRepository(
-      sl(),
-      TrainerDeviceFactory()
-    )
+    () {
+      debug('[Injector] TrainerDeviceRepository');
+      return TrainerDeviceRepository(
+        sl(),
+        TrainerDeviceFactory(BTDeviceController(sl<BluetoothProvider>()))
+      );
+    }
   );
 
-
+  // sl.registerLazySingleton<HeartRateDeviceRepository>(
+  //         () => HeartRateDeviceRepository(
+  //         sl(),
+  //         HeartRateDeviceFactory(BTDeviceController(sl<BluetoothProvider>()))
+  //     )
+  // );
+  // debug version
   sl.registerLazySingleton<HeartRateDeviceRepository>(
-    () => HeartRateDeviceRepository(
-      sl(),
-      HeartRateDeviceFactory()
-    )
+    () {
+      debug('[Injector] HeartRateDeviceRepository');
+      return HeartRateDeviceRepository(
+          sl(),
+          HeartRateDeviceFactory(BTDeviceController(sl<BluetoothProvider>()))
+      );
+    }
   );
 
-
+  // sl.registerLazySingleton<TrainerDeviceUseCases>(
+  //         () => TrainerDeviceController(
+  //         sl()
+  //     )
+  // );
+  // debug version
   sl.registerLazySingleton<TrainerDeviceUseCases>(
-    () => TrainerDeviceController(
-      sl()
-    )
+    () {
+      debug('[Injector] TrainerDeviceController');
+      return TrainerDeviceController(sl());
+    }
   );
 
+  // sl.registerLazySingleton<HeartRateDeviceUseCases>(
+  //         () => HeartRateDeviceController(
+  //         sl()
+  //     )
+  // );
+  // debug version
   sl.registerLazySingleton<HeartRateDeviceUseCases>(
-    () => HeartRateDeviceController(
-      sl()
-    )
+    () {
+      debug('[Injector] HeartRateDeviceController');
+      return HeartRateDeviceController(sl());
+    }
   );
 
+  // sl.registerLazySingleton<LinkingUseCases>(
+  //   () => LinkingController(
+  //     sl(),
+  //     sl(),
+  //     sl(),
+  //   )
+  // );
+  // debug version
   sl.registerLazySingleton<LinkingUseCases>(
-    () => LinkingController(
-      sl(), 
-      sl(),
-      sl(),
-    )
+    () {
+      debug('[Injector] LinkingController');
+      return LinkingController(sl(),  sl(), sl());
+    }
   );
-  
+
+  // sl.registerLazySingleton<DBProvider>(
+  //   () => SQFLiteProvider()
+  // );
+  // debug version
   sl.registerLazySingleton<DBProvider>(
-    () => SQFLiteProvider()
+    () {
+      debug('[Injector] SQFLiteProvider');
+      return SQFLiteProvider();
+    }
   );
 
+  // sl.registerLazySingleton<BluetoothUseCases>(
+  //   () => BluetoothController(sl(), sl())
+  // );
+  // debug version
   sl.registerLazySingleton<BluetoothUseCases>(
-    () => BluetoothController(sl(), sl())
+    () {
+      debug('[Injector] BluetoothController');
+      return BluetoothController(sl(), sl());
+    }
   );
 
+  // sl.registerLazySingleton<BluetoothProvider>(
+  //   () => FlutterBlueProvider()
+  // );
+  // debug version
   sl.registerLazySingleton<BluetoothProvider>(
-    () => FlutterBlueProvider()
+    () {
+      debug('[Injector] FlutterBlueProvider');
+      return FlutterBlueProvider();
+    }
   );
 
+  // sl.registerLazySingleton<DBDeviceFactory>(
+  //   () => DefaultDBDeviceFactory()
+  // );
+  // debug version
   sl.registerLazySingleton<DBDeviceFactory>(
-    () => DefaultDBDeviceFactory()
+    () {
+      debug('[Injector] DefaultDBDeviceFactory');
+      return DefaultDBDeviceFactory();
+    }
   );
 
+  // sl.registerLazySingleton<BTDeviceCheckUseCases>(
+  //   () => BTDeviceCheckController(sl())
+  // );
+  // debug version
   sl.registerLazySingleton<BTDeviceCheckUseCases>(
-    () => BTDeviceCheckController(sl())
+    () {
+      debug('[Injector] BTDeviceCheckController');
+      return BTDeviceCheckController(sl());
+    }
   );
 
-  
+
 
 }
